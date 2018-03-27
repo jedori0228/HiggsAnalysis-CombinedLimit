@@ -13,26 +13,26 @@ observation 0.0
 bin	1	1	1	1
 process	prompt	fake	cf	HN1700
 process	1	2	3	0
-rate	0.022	0.0	0.0	0.0207
+rate	0.657	0.0	0.0	0.0012
 ------------
-Stat	lnN	1.4149	-	-	1.0148
+Stat	lnN	1.7662	-	-	1.0111
 Lumi	lnN	1.025	-	-	1.025
-PDF	lnN	-	-	-	1.023
-MuonPt	lnN	1.1072	-	-	1.0071
-MuonID	lnN	1.0323	-	-	1.0336
-ElectronE	lnN	1.2316	-	-	1.002
-ElectronID	lnN	1.0	-	-	1.0009
-Trigger	lnN	1.1146	-	-	1.0051
-PU	lnN	1.2375	-	-	1.0052
-JES	lnN	1.0	-	-	1.004
-JER	lnN	1.0	-	-	1.0021
-Uncl	lnN	1.2316	-	-	1.004
-BEff	lnN	1.2605	-	-	1.004
-BMiss	lnN	1.0	-	-	1.0035
-JMS	lnN	1.1097	-	-	1.0005
-JMR	lnN	1.3139	-	-	1.0008
-Tau21	lnN	1.0712	-	-	1.0838
-MCNorm	lnN	1.6451	-	-	-
+PDF	lnN	-	-	-	1.05
+MuonPt	lnN	1.0993	-	-	1.018
+MuonID	lnN	1.0164	-	-	1.0195
+ElectronE	lnN	1.0	-	-	1.0077
+ElectronID	lnN	1.0229	-	-	1.0181
+Trigger	lnN	1.002	-	-	1.0014
+PU	lnN	1.2042	-	-	1.0131
+JES	lnN	1.0	-	-	1.0145
+JER	lnN	1.001	-	-	1.0047
+Uncl	lnN	1.0	-	-	1.001
+BEff	lnN	1.0	-	-	1.0064
+BMiss	lnN	1.0	-	-	1.0039
+JMS	lnN	1.5318	-	-	1.0013
+JMR	lnN	1.0	-	-	1.0006
+Tau21	lnN	1.0768	-	-	1.0885
+MCNorm	lnN	1.1306	-	-	-
 Fake	lnN	-	-	-	-
 CF	lnN	-	-	-	-
-ZeroFake	gmN 0	-	0.1152	-	-
+ZeroFake	gmN 0	-	0.2037	-	-

@@ -1,0 +1,15 @@
+Sun Mar 11 23:10:26 KST 2018
+[bash] cardpath : ElEl_Combined/HNElEl_800.txt
+[bash] name : exp_0.500_Combined_HNElEl_800
+[bash] quant : 0.500
+## Running Expected Limit ##
+## expectedFromGrid = 
+combine -M HybridNew --frequentist --testStat LHC -H ProfileLikelihood /data7/Users/jskim/CMSSW_7_4_7/src/HiggsAnalysis/CombinedLimit/data/2016_HNDiLepton//ElEl_Combined/HNElEl_800.txt -n exp_0.500_Combined_HNElEl_800 --expectedFromGrid 0.500 -T 4000
+>>> including systematics
+>>> using the Profile Likelihood test statistics modified for upper limits (Q_LHC)
+>>> method used to compute upper limit is HybridNew
+>>> method used to hint where the upper limit is ProfileLikelihood
+>>> random number generator seed is 123456
+Computing limit starting from observation
+combine done
+Sun Mar 11 23:30:06 KST 2018

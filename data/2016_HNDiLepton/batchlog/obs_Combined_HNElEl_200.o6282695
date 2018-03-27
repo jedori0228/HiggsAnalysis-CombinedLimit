@@ -1,0 +1,6 @@
+Sun Mar 11 22:48:42 KST 2018
+[bash] cardpath : ElEl_Combined/HNElEl_200.txt
+[bash] name : obs_Combined_HNElEl_200
+[bash] quant : 
+## Running Observed Limit ##
+combine -M HybridNew --frequentist --testStat LHC -H ProfileLikelihood /data7/Users/jskim/CMSSW_7_4_7/src/HiggsAnalysis/CombinedLimit/data/2016_HNDiLepton//ElEl_Combined/HNElEl_200.txt -n obs_Combined_HNElEl_200 -T 4000

@@ -1,7 +1,0 @@
-Sun Mar 11 22:48:41 KST 2018
-[bash] cardpath : MuEl_Bin2/HNMuEl_300.txt
-[bash] name : exp_0.160_Bin2_HNMuEl_300
-[bash] quant : 0.160
-## Running Expected Limit ##
-## expectedFromGrid = 
-combine -M HybridNew --frequentist --testStat LHC -H ProfileLikelihood /data7/Users/jskim/CMSSW_7_4_7/src/HiggsAnalysis/CombinedLimit/data/2016_HNDiLepton//MuEl_Bin2/HNMuEl_300.txt -n exp_0.160_Bin2_HNMuEl_300 --expectedFromGrid 0.160 -T 4000

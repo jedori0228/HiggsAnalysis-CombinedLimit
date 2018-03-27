@@ -1,6 +1,0 @@
-Sun Mar 11 22:48:42 KST 2018
-[bash] cardpath : ElEl_Bin1/HNElEl_400_VBF.txt
-[bash] name : obs_Bin1_HNElEl_400_VBF
-[bash] quant : 
-## Running Observed Limit ##
-combine -M HybridNew --frequentist --testStat LHC -H ProfileLikelihood /data7/Users/jskim/CMSSW_7_4_7/src/HiggsAnalysis/CombinedLimit/data/2016_HNDiLepton//ElEl_Bin1/HNElEl_400_VBF.txt -n obs_Bin1_HNElEl_400_VBF -T 4000

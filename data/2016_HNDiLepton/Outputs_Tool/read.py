@@ -10,7 +10,7 @@ channels = ["MuMu", "ElEl", "MuEl"]
 Bins = ["Bin1", "Bin2", "Combined"]
 
 ## no 80 GeV
-masses = [20, 30, 40, 50, 60, 70, 75, 85, 90, 100, 125, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500]
+masses = [20, 30, 40, 50, 60, 70, 75, 85, 90, 100, 125, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1700]
 massesVBF = [300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1700, 2000]
 
 counter = 0
@@ -23,6 +23,7 @@ for ch in channels:
     outVBF = open(outputdir+'/result_VBF.txt','w')
 
     for mass in masses:
+
 
       obs = ReadLimit(outputdir+"/obs_log_"+Bin+"_HN"+ch+"_"+str(mass)+".log")
       mean = ReadLimit(outputdir+"/exp_0.500_log_"+Bin+"_HN"+ch+"_"+str(mass)+".log")

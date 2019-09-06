@@ -55,6 +55,8 @@ for i in range(0,n_job):
 
   # CardUsed = card_EE_Combined_WR5000_N4200
   words = CardUsed.split('_')
+  if len(words)<4:
+    continue
   cardinfo = words[1]+'\t'+words[2]+'\t'+words[3].replace('WR','')+'\t'+words[4].replace('N','')
 
   #if Expected_Central=="":

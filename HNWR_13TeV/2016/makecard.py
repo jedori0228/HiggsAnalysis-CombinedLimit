@@ -27,9 +27,11 @@ systs =[
     "JetEn",
     "MuonEn",
     "MuonIDSF",
+    "MuonTriggerSF",
     "ElectronRes",
     "ElectronEn",
     "ElectronIDSF",
+    "ElectronTriggerSF",
 ]
 
 sig_systs = [
@@ -101,6 +103,7 @@ observation -1
       out.write(line_4+'\n')
       out.write('---------------------------------\n')
 
+      '''
       ### Signal stat
       SignalStat = 'SignalStat lnN 1'
       for sample in samples:
@@ -119,7 +122,7 @@ observation -1
             statline_for_this_sample += ' -'
 
         out.write(statline_for_this_sample+'\n')
-
+'''
       #### DY PDF
       DYNormline = 'DYNorm lnN -'
       for sample in samples:
@@ -149,6 +152,9 @@ observation -1
         for sample in samples:
           thisline += ' -'
         out.write(thisline+'\n')
+
+      #### Auto stat
+      out.write('* autoMCStats 0 0 1\n')
 
       out.close()
 

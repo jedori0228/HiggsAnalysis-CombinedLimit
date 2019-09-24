@@ -94,7 +94,7 @@ done
   #### AymptoticLimits
   else:
     #runfile.write('combine -M AsymptoticLimits --run blind '+card+'\n')
-    runfile.write('combine -M AsymptoticLimits '+card+'\n')
+    runfile.write('combine -M AsymptoticLimits '+card+' --run blind \n')
 
 
   runfile.close()

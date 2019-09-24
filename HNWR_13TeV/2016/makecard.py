@@ -35,7 +35,7 @@ systs =[
 ]
 
 sig_systs = [
-  "Scale",
+  #"Scale", ## Log normal
   "PDFError",
   "AlphaS",
 ]
@@ -152,6 +152,15 @@ observation -1
         for sample in samples:
           thisline += ' -'
         out.write(thisline+'\n')
+
+      #### Scale as log normal
+      signalScaleLine = 'SignalScale lnN '
+      h_SignalScale = f.Get(mass+'_ScaleIntegralSyst')
+      if h_SignalScale:
+        syst_SignalScale = 1.+h_SignalScale.GetBinContent(1)
+        signalScaleLine = 'SignalScale lnN '+str(syst_SignalScale)+' -'*len(samples)
+        out.write(signalScaleLine+'\n')
+
 
       #### Auto stat
       out.write('* autoMCStats 0 0 1\n')

@@ -1,4 +1,11 @@
 import os,ROOT
+import argparse
+
+parser = argparse.ArgumentParser(description='option')
+parser.add_argument('-y', dest='Year')
+args = parser.parse_args()
+
+Year = args.Year
 
 channels = [
 "EE",
@@ -15,15 +22,17 @@ for i in range(0,len(masses)):
   masses[i] = masses[i].replace('WRtoNLtoLLJJ_','').strip('\n')
 
 #### debug
-#masses_tmp = masses
-#masses = []
-#masses.append(masses_tmp[0])
+#masses = [
+#"WR4400_N400",
+#"WR4400_N2200",
+#"WR4400_N4300",
+#]
 
 for channel in channels:
   for region in regions:
 
-    f_Bkgd_origin = ROOT.TFile('MergedRootfiles/'+channel+'_'+region+'_SR_Bkgd.root')
-    f_Sig_origin = ROOT.TFile('MergedRootfiles/'+channel+'_'+region+'_SR_Signal.root')
+    f_Bkgd_origin = ROOT.TFile('MergedRootfiles/'+Year+'/'+channel+'_'+region+'_SR_Bkgd.root')
+    f_Sig_origin = ROOT.TFile('MergedRootfiles/'+Year+'/'+channel+'_'+region+'_SR_Signal.root')
 
     keys_Bkgd = f_Bkgd_origin.GetListOfKeys()
     keys_Sig = f_Sig_origin.GetListOfKeys()
@@ -31,7 +40,7 @@ for channel in channels:
 
     for mass in masses:
 
-      out = ROOT.TFile('Ingredients/'+channel+'_'+region+'_'+mass+'.root','RECREATE')
+      out = ROOT.TFile('Ingredients/'+Year+'_'+channel+'_'+region+'_'+mass+'.root','RECREATE')
 
       for key in keys_Bkgd:
         h = f_Bkgd_origin.Get(key.GetName())

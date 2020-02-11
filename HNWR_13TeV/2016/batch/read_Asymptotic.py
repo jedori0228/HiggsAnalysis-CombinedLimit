@@ -18,6 +18,8 @@ lines = open('tmp.txt').readlines()
 os.system('rm tmp.txt')
 
 n_job = len(lines)
+outfile = open(Logdir+'.txt','w')
+
 for i in range(0,n_job):
   lines_log = open(lines[i].strip('\n')).readlines()
 
@@ -30,7 +32,6 @@ for i in range(0,n_job):
       break
 
   CardUsed = CardUsed.split('/')[-1].replace('.txt','')
-  #print CardUsed
 
   Expected_Central = ""
   Expected_1sdUp = ""
@@ -52,17 +53,20 @@ for i in range(0,n_job):
       Expected_2sdUp = line.split()[4]
     if "Expected  2.5%" in line:
       Expected_2sdDn = line.split()[4]
+    if "Observed Limit" in line:
+      Obs = line.split()[4]
 
   # CardUsed = card_EE_Combined_WR5000_N4200
+  #            YearCombined_card_EE_Boosted_WR1000_N100.txt
   words = CardUsed.split('_')
   if len(words)<4:
     continue
-  cardinfo = words[1]+'\t'+words[2]+'\t'+words[3].replace('WR','')+'\t'+words[4].replace('N','')
+  cardinfo = words[2]+'\t'+words[3]+'\t'+words[4].replace('WR','')+'\t'+words[5].replace('N','')
 
   #if Expected_Central=="":
   #  print cardinfo
 
-  print cardinfo+'\t'+Expected_Central+'\t'+Expected_1sdUp+'\t'+Expected_1sdDn+'\t'+Expected_2sdUp+'\t'+Expected_2sdDn
+  outfile.write(cardinfo+'\t'+Expected_Central+'\t'+Expected_1sdUp+'\t'+Expected_1sdDn+'\t'+Expected_2sdUp+'\t'+Expected_2sdDn+'\t'+Obs+'\n')
 
 
 '''
@@ -76,3 +80,7 @@ Expected 97.5%: r < 4.5513
 
 Done in 0.00 min (cpu), 0.00 min (real)
 '''
+
+outfile.close()
+#os.system('scp '+Logdir+'.txt jskim@147.47.242.71:/home/jskim/Documents/HN_13TeV/HNWR_Plotter/rootfiles/Run2Legacy_v3__Default/Limit/Asymptotic/2016/')
+

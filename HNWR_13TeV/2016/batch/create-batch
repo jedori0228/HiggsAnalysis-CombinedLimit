@@ -24,6 +24,11 @@ JobName = timestamp
 if args.Name!="":
   JobName += "__"+args.Name
 
+print '@@@@ Job directory :'
+print 'cd '+JobName
+print 'condor_submit submit.sh'
+print 'cd ..'
+
 FullPathJobDir = pwd+'/'+JobName+'/'
 os.system('mkdir -p '+JobName+'/output/')
 
@@ -93,8 +98,8 @@ done
 
   #### AymptoticLimits
   else:
-    #runfile.write('combine -M AsymptoticLimits --run blind '+card+'\n')
-    runfile.write('combine -M AsymptoticLimits '+card+' --run blind \n')
+    #runfile.write('combine -M AsymptoticLimits '+card+' --run blind \n')
+    runfile.write('combine -M AsymptoticLimits '+card+'\n')
 
 
   runfile.close()

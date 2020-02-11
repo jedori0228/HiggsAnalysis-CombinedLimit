@@ -12,8 +12,8 @@ MuMu_Resolved_SR_Signal.root
 Then, 
 
 cd $CMSSE_BASE/src/HiggsAnalysis/CombinedLimit/HNWR_13TeV/2016/MergedRootfiles 
-python ExtractHistograms.py
-python makecard.py
+python ExtractHistograms.py -y <2016/2017/2018>
+python makecard.py -y <2016/2017/2018>
 
 You will have datacards and shapes in $CMSSE_BASE/src/HiggsAnalysis/CombinedLimit/HNWR_13TeV/2016/Ingredients/
 

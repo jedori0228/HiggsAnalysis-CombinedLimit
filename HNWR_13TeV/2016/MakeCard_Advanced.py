@@ -1,8 +1,15 @@
 import os,ROOT
 import argparse
 
-#### Correlated cases
-#### Except Lumi
+#### Define Corr/Uncorr nuisances
+
+def IsCorrelated(syst):
+
+  if "JetRes" in syst:
+    return True
+  if "JetEn" in syst:
+    return True
+  return False
 
 parser = argparse.ArgumentParser(description='option')
 parser.add_argument('-y', dest='Year')
@@ -161,17 +168,19 @@ observation -1
           continue
 
 
-        thisline = syst+' shapeN2 1'
+        thisline = 'Run'+Year+'_'+syst+' shapeN2 1'
+        if IsCorrelated(syst):
+          thisline = syst+' shapeN2 1'
+
         for sample in samples:
           if "EMuMethod" in sample:
             thisline += ' -'
           else:
             thisline += ' 1'
-
         out.write(thisline+'\n')
 
       #### EMu Syst
-      EMuSystline = 'EMuSyst lnN -'
+      EMuSystline = 'Run'+Year+'_EMuSyst'+' lnN -'
       for sample in samples:
         if "EMuMethod" in sample:
           EMuSystline += ' '+EMuSyst
@@ -180,7 +189,7 @@ observation -1
       out.write(EMuSystline+'\n')
 
       #### ZPt reweight
-      ZPtRwline = 'ZPtRw shapeN2 -'
+      ZPtRwline = 'Run'+Year+'_ZPtRw'+' shapeN2 -'
       for sample in samples:
         if 'DYJets_' in sample:
           ZPtRwline += ' 1'
@@ -188,7 +197,7 @@ observation -1
           ZPtRwline += ' -'
       out.write(ZPtRwline+'\n')
 
-      NormSyst_Lumi = 'Run'+Year+'_Lumi lnN'+(' '+LumiSyst)*(len(samples)+1)+'\n'
+      NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples)+1)+'\n'
       out.write(NormSyst_Lumi)
 
       #### Signal only
@@ -211,7 +220,7 @@ observation -1
       #### ee
       if Year!="2016" and channel=="EE":
 
-        lineExtraEESyst = 'FastSimHEEPSyst lnN 1.02'+' -'*len(samples)
+        lineExtraEESyst = 'Run'+Year+'_FastSimHEEPSyst lnN 1.02'+' -'*len(samples)
         out.write(lineExtraEESyst+'\n')
 
 

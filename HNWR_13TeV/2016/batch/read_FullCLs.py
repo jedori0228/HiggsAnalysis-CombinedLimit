@@ -21,6 +21,8 @@ os.system('ls -1 '+Logdir+'/job_*.log > tmp.txt')
 lines = open('tmp.txt').readlines()
 os.system('rm tmp.txt')
 
+outfile = open(Logdir+'.txt','w')
+
 n_job = len(lines)
 for i in range(0,n_job):
 
@@ -63,13 +65,17 @@ for i in range(0,n_job):
     limits.append(this_limit)
 
   # CardUsed = card_EE_Combined_WR5000_N4200
+  #            YearCombined_card_EE_Boosted_WR1000_N100.txt
   words = CardUsed.split('_')
-  cardinfo = words[1]+'\t'+words[2]+'\t'+words[3].replace('WR','')+'\t'+words[4].replace('N','')
+  if len(words)<4:
+    continue
+  cardinfo = words[2]+'\t'+words[3]+'\t'+words[4].replace('WR','')+'\t'+words[5].replace('N','')
 
   #if Expected_Central=="":
   #  print cardinfo
 
-  print cardinfo+'\t'+limits[0]+'\t'+limits[1]+'\t'+limits[2]+'\t'+limits[3]+'\t'+limits[4]
+  #0.025 0.160 0.500 0.840 0.975
+  outfile.write(cardinfo+'\t'+limits[2]+'\t'+limits[3]+'\t'+limits[1]+'\t'+limits[4]+'\t'+limits[0]+'\n')
 
 
 '''

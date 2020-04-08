@@ -1,0 +1,5 @@
+#!/bin/bash
+for dir in 2020_04_07_133406__Year2016_TTMC_UpdateCorrel_TopPtReweight 2020_04_07_133411__Year2017_TTMC_UpdateCorrel_TopPtReweight 2020_04_07_133417__Year2018_TTMC_UpdateCorrel_TopPtReweight 2020_04_07_133422__YearCombined_TTMC_UpdateCorrel_TopPtReweight
+do
+  ./read_Asymptotic.py -i $dir
+done

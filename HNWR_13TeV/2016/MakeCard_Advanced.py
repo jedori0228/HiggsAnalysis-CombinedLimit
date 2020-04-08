@@ -38,9 +38,7 @@ for i in range(0,len(masses)):
 
 #### Debug
 #masses = [
-#"WR4400_N400",
-#"WR4400_N2200",
-#"WR4400_N4300",
+#"WR4000_N3000",
 #]
 ####
 
@@ -81,13 +79,13 @@ sig_systs = [
 #### TODO
 #### can differ for different year
 allsamples = [
+'EMuMethod_TTLX_powheg',
 'VVV',
 'VV',
 'ttX',
 'SingleTop',
 'WJets_MG_HT',
 'DYJets_MG_HT_Reweighted',
-'EMuMethod_TTLX_powheg'
 ]
 
 for region in regions:
@@ -101,6 +99,8 @@ for region in regions:
     print "WTF??"
 
   for channel in channels:
+
+    binname = region+"_"+channel
 
     for mass in masses:
 
@@ -123,17 +123,17 @@ kmax *
 ---------------
 shapes * * {0} $PROCESS $PROCESS_$SYSTEMATIC
 ---------------
-bin bin1
+bin {2}
 observation -1
-------------------------------'''.format(PWD+'/Ingredients/'+Year+'_'+filename, str(len(samples)))
-      line_1 = 'bin bin1'
+------------------------------'''.format(PWD+'/Ingredients/'+Year+'_'+filename, str(len(samples)),binname)
+      line_1 = 'bin '+binname
       line_2 = 'process '+mass
       line_3 = 'process '+'0'
       line_4 = 'rate '+'-1'
 
       counter = 1
       for sample in samples:
-        line_1 += ' bin1'
+        line_1 += ' '+binname
         line_2 += ' '+sample
         line_3 += ' '+str(counter)
         line_4 += ' -1'

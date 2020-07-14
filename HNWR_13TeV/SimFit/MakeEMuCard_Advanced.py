@@ -66,12 +66,12 @@ systs =[
 
 allsamples = [
 'TTLX_powheg',
-'VVV',
-'VV',
-'ttX',
-'SingleTop',
-'WJets_MG_HT',
+#'Multiboson',
+#'ttX',
+#'SingleTop',
+#'WJets_MG_HT',
 'DYJets_MG_HT_Reweighted',
+"Others",
 ]
 
 for mass in masses:
@@ -139,7 +139,7 @@ observation -1
     DYNormline = 'DYNorm lnN -'
     for sample in samples:
       if 'DYJets_' in sample:
-        DYNormline += ' 1.03'
+        DYNormline += ' 1.30'
       else:
         DYNormline += ' -'
     out.write(DYNormline+'\n')

@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser(description='option')
 parser.add_argument('-n', dest='Name', default="")
 parser.add_argument('-l', dest='RunList')
 parser.add_argument('--Full', action='store_true')
+parser.add_argument('--nmax', dest='NMax', default=0, type=int)
 args = parser.parse_args()
 
 pwd = os.getcwd()
@@ -59,6 +60,14 @@ executable.close()
 
 #### Write jds
 
+MemoryLine = ''
+if args.Full:
+  MemoryLine = 'request_memory = 8000\n'
+
+NMaxLine = ''
+if args.NMax:
+  NMaxLine = 'concurrency_limits = n'+str(args.NMax)+'.'+os.getenv("USER")+'\n'
+
 jdsfile = open(pwd+'/'+JobName+'/submit.sh','w')
 print>>jdsfile,'''executable = {1}
 universe   = vanilla
@@ -71,8 +80,10 @@ output = job_$(Process).log
 error = job_$(Process).err
 #transfer_output_files = higgsCombineTest.AsymptoticLimits.mH120.root
 #transfer_output_remaps = "higgsCombineTest.AsymptoticLimits.mH120.root = output/hists_$(Process).root"
+{2}
+{3}
 queue {0}
-'''.format(str(NCARD), executable_filename)
+'''.format(str(NCARD), executable_filename, MemoryLine, NMaxLine)
 jdsfile.close()
 
 #### write job sh file
@@ -89,11 +100,11 @@ for i in range(0,NCARD):
 
   #### Full CLs
   if args.Full:
+    #### TODO add obs later
     print>>runfile,'''for quant in 0.025 0.160 0.500 0.840 0.975
 do
   echo "#### quant = "$quant
-  #combine -M HybridNew --frequentist --testStat LHC {0} -n {1}_exp$quant --expectedFromGrid $quant -T 100
-  combine -M HybridNew --testStat LHC {0} -n {1}_exp$quant --expectedFromGrid $quant -T 1000
+  combine -M HybridNew --LHCmode LHC-limits {0} --expectedFromGrid $quant -T 100
 done
 '''.format(card,shortcard)
 

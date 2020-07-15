@@ -82,11 +82,11 @@ for region in regions:
 
   for channel in channels:
 
-    binname = region+"_SR_"+channel
+    binname = region+"_DYCR_"+channel
 
     for mass in masses:
 
-      filename = channel+'_'+region+'_SR.root'
+      filename = channel+'_'+region+'_DYCR.root'
 
       f = ROOT.TFile('Ingredients/'+Year+'_'+filename)
       samples = []
@@ -95,7 +95,7 @@ for region in regions:
           samples.append(sample)
 
 
-      out = open('Ingredients/'+Year+'_card_'+channel+'_'+region+'_SR_'+mass+'.txt','w')
+      out = open('Ingredients/'+Year+'_card_'+channel+'_'+region+'_DYCR_'+mass+'.txt','w')
 
       alltext = ''
 
@@ -219,65 +219,10 @@ observation -1
 
       #### Auto stat
       out.write('* autoMCStats 0 0 1\n')
-      out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_SR_'+channel+' TTLX_powheg 1\n')
-
+      out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
 
       out.close()
 
 ## combine
 
 #'combineCards.py Name1=card1.txt Name2=card2.txt .... > card.txt'
-
-os.chdir('Ingredients/')
-
-## CR+SR
-print '@@@@ Combining SR and CR'
-for region in regions:
-
-  for channel in channels:
-
-    print '@@@@   '+region+'\t'+channel
-
-    for mass in masses:
-
-      outname = Year+'_card_CRAdded_'+channel+'_'+region+'_'+mass+'.txt'
-
-      emuCRCardName = Year+"_card_"+channel+"_EMuShape_EMu_Resolved_SR_"+mass+".txt"
-      if region=="Boosted":
-        if channel=="EE":
-          emuCRCardName = Year+"_card_"+channel+"_EMuShape_SingleMuon_EMu_Boosted_CR_"+mass+".txt"
-        elif channel=="MuMu":
-          emuCRCardName = Year+"_card_"+channel+"_EMuShape_SingleElectron_EMu_Boosted_CR_"+mass+".txt"
-
-      DYCRCardName = Year+'_card_'+channel+'_'+region+'_DYCR_'+mass+'.txt'
-
-      cmd = 'combineCards.py'
-      cmd += ' SR='+Year+'_card_'+channel+'_'+region+'_SR_'+mass+'.txt'
-      cmd += ' emuCR='+emuCRCardName
-      cmd += ' DYCR='+DYCRCardName
-
-      cmd += ' > '+outname
-
-      #print cmd
-      os.system(cmd)
-
-for channel in channels:
-
-  for mass in masses:
-
-    outname = Year+'_card_CRAdded_'+channel+'_'+'Combined'+'_'+mass+'.txt'
-
-    cmd = 'combineCards.py '
-
-    counter = 0
-    for region in regions:
-      counter = counter+1
-      source = Year+'_card_CRAdded_'+channel+'_'+region+'_'+mass+'.txt'
-      cmd += channel+'_'+region+'='+source+' '
-    cmd += ' > '+outname
-
-    os.system(cmd)
-
-os.chdir('../')
-
-

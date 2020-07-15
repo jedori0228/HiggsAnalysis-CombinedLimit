@@ -1,6 +1,7 @@
 import os,ROOT
 import argparse
 from IsCorrelated import IsCorrelated
+from Masses import *
 
 parser = argparse.ArgumentParser(description='option')
 parser.add_argument('-y', dest='Year')
@@ -24,21 +25,6 @@ print "@@@@ Year = "+Year
 print "@@@@ Lumi err = "+LumiSyst
 
 PWD = os.getcwd()
-
-all_masses = open('masses.txt').readlines()
-masses = []
-for mass in all_masses:
-  if "#" in mass:
-    continue
-  masses.append(mass)
-for i in range(0,len(masses)):
-  masses[i] = masses[i].replace('WRtoNLtoLLJJ_','').strip('\n')
-
-#### Debug
-#masses = [
-#"WR4000_N3000",
-#]
-####
 
 regions = [
   ["EMu_Resolved_SR","Resolved_EMu"],
@@ -142,7 +128,7 @@ observation -1
         DYNormline += ' 1.30'
       else:
         DYNormline += ' -'
-    out.write(DYNormline+'\n')
+    #out.write(DYNormline+'\n')
 
     ### now syst
     for syst in systs:
@@ -193,7 +179,7 @@ observation -1
 
     #### Auto stat
     out.write('* autoMCStats 0 0 1\n')
-    out.write('R_'+ResolvedORBoosted+'_'+channel+'_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+    out.write('R_ttbar_'+ResolvedORBoosted+'_'+channel+'_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
 
     out.close()
 

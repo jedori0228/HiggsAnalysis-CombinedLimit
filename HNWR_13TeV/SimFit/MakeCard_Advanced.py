@@ -99,8 +99,8 @@ for region in regions:
 
       alltext = ''
 
-      print>>out,'''imax 1
-jmax {1}
+      print>>out,'''imax *
+jmax *
 kmax *
 ---------------
 shapes * * {0} $PROCESS $PROCESS_$SYSTEMATIC
@@ -220,6 +220,7 @@ observation -1
       #### Auto stat
       out.write('* autoMCStats 0 0 1\n')
       out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_SR_'+channel+' TTLX_powheg 1\n')
+      out.write('R_DY_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_SR_'+channel+' DYJets_MG_HT_Reweighted 1\n')
 
 
       out.close()

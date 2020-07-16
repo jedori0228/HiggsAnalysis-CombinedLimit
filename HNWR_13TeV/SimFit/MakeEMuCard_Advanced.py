@@ -93,8 +93,8 @@ for mass in masses:
 
     alltext = ''
 
-    print>>out,'''imax 1
-jmax {1}
+    print>>out,'''imax *
+jmax *
 kmax *
 ---------------
 shapes * * {0} $PROCESS $PROCESS_$SYSTEMATIC

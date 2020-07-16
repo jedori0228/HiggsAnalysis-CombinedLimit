@@ -9,6 +9,7 @@ for i in range(0,len(masses)):
 
 #### Debug
 #masses = [
-#"WR4000_N3000",
+#"WR5000_N100",
+#"WR5000_N3000",
 #]
 ####

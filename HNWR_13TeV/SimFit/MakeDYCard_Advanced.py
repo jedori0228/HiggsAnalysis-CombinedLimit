@@ -99,8 +99,8 @@ for region in regions:
 
       alltext = ''
 
-      print>>out,'''imax 1
-jmax {1}
+      print>>out,'''imax *
+jmax *
 kmax *
 ---------------
 shapes * * {0} $PROCESS $PROCESS_$SYSTEMATIC
@@ -108,10 +108,10 @@ shapes * * {0} $PROCESS $PROCESS_$SYSTEMATIC
 bin {2}
 observation -1
 ------------------------------'''.format(PWD+'/Ingredients/'+Year+'_'+filename, str(len(samples)),binname)
-      line_1 = 'bin '+binname
-      line_2 = 'process '+mass
-      line_3 = 'process '+'0'
-      line_4 = 'rate '+'-1'
+      line_1 = 'bin'
+      line_2 = 'process'
+      line_3 = 'process'
+      line_4 = 'rate'
 
       counter = 1
       for sample in samples:
@@ -128,7 +128,7 @@ observation -1
       out.write('---------------------------------\n')
 
       #### DY PDF
-      DYNormline = 'DYNorm lnN -'
+      DYNormline = 'DYNorm lnN'
       for sample in samples:
         if 'DYJets_' in sample:
           DYNormline += ' 1.30'
@@ -136,7 +136,7 @@ observation -1
           DYNormline += ' -'
       #out.write(DYNormline+'\n')
       #### DYShape
-      DYShapeline = 'Run'+Year+'_'+'DYShape shapeN2 -'
+      DYShapeline = 'Run'+Year+'_'+'DYShape shapeN2'
       for sample in samples:
         if 'DYJets_' in sample:
           DYShapeline += ' 1'
@@ -158,9 +158,9 @@ observation -1
           continue
 
 
-        thisline = 'Run'+Year+'_'+syst+' shapeN2 1'
+        thisline = 'Run'+Year+'_'+syst+' shapeN2'
         if IsCorrelated(syst):
-          thisline = syst+' shapeN2 1'
+          thisline = syst+' shapeN2'
 
         for sample in samples:
           if "EMuMethod" in sample:
@@ -171,7 +171,7 @@ observation -1
 
       #### ZPt reweight
       #ZPtRwline = 'Run'+Year+'_ZPtRw'+' shapeN2 -'
-      ZPtRwline = 'ZPtRw'+' shapeN2 -'
+      ZPtRwline = 'ZPtRw'+' shapeN2'
       for sample in samples:
         if 'DYJets_' in sample:
           ZPtRwline += ' 1'
@@ -189,37 +189,22 @@ observation -1
       #    TopPtRwline += ' -'
       #out.write(TopPtRwline+'\n')
 
-      NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples)+1)+'\n'
+      NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples))+'\n'
       out.write(NormSyst_Lumi)
 
       #### Signal only
 
       for syst in sig_systs:
 
-        thisline = syst+' shapeN2 1'
+        thisline = syst+' shapeN2'
         for sample in samples:
           thisline += ' -'
         out.write(thisline+'\n')
 
-      #### Scale as log normal
-      signalScaleLine = 'SignalScale lnN '
-      h_SignalScale = f.Get(mass+'_ScaleIntegralSyst')
-      if h_SignalScale:
-        syst_SignalScale = 1.+h_SignalScale.GetBinContent(1)
-        signalScaleLine = 'SignalScale lnN '+str(syst_SignalScale)+' -'*len(samples)
-        out.write(signalScaleLine+'\n')
-
-      #### ee
-      if Year!="2016" and channel=="EE":
-
-        #lineExtraEESyst = 'Run'+Year+'_FastSimHEEPSyst lnN 1.02'+' -'*len(samples)
-        lineExtraEESyst = 'FastSimHEEPSyst lnN 1.02'+' -'*len(samples)
-        out.write(lineExtraEESyst+'\n')
-
-
       #### Auto stat
       out.write('* autoMCStats 0 0 1\n')
       out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
+      out.write('R_DY_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' DYJets_MG_HT_Reweighted 1\n')
 
       out.close()
 

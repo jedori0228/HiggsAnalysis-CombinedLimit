@@ -1,10 +1,10 @@
 import os
 
 Dirs = [
-'2020_07_15_185034__Year2016_DYCRAddedWithShapeSyst',
-'2020_07_15_185035__Year2017_DYCRAddedWithShapeSyst',
-'2020_07_15_185036__Year2018_DYCRAddedWithShapeSyst',
-'2020_07_15_185037__YearCombined_DYCRAddedWithShapeSyst',
+'2020_07_19_130454__Year2016_DYCRmll800Applied',
+'2020_07_19_130455__Year2017_DYCRmll800Applied',
+'2020_07_19_130456__Year2018_DYCRmll800Applied',
+'2020_07_19_130457__YearCombined_DYCRmll800Applied',
 ]
 
 print 'for dir in ',

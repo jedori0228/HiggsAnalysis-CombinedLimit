@@ -136,7 +136,7 @@ observation -1
           DYNormline += ' -'
       #out.write(DYNormline+'\n')
       #### DYShape
-      DYShapeline = 'Run'+Year+'_'+'DYShape shapeN2 -'
+      DYShapeline = 'Run'+Year+'_'+region+'DYShape shapeN2 -'
       for sample in samples:
         if 'DYJets_' in sample:
           DYShapeline += ' 1'
@@ -233,6 +233,11 @@ os.chdir('Ingredients/')
 
 ## CR+SR
 print '@@@@ Combining SR and CR'
+AllRegions = [
+  "Resolved",
+  "Boosted",
+  "Combined",
+]
 for region in regions:
 
   for channel in channels:
@@ -243,41 +248,26 @@ for region in regions:
 
       outname = Year+'_card_CRAdded_'+channel+'_'+region+'_'+mass+'.txt'
 
-      emuCRCardName = Year+"_card_"+channel+"_EMuShape_EMu_Resolved_SR_"+mass+".txt"
-      if region=="Boosted":
-        if channel=="EE":
-          emuCRCardName = Year+"_card_"+channel+"_EMuShape_SingleMuon_EMu_Boosted_CR_"+mass+".txt"
-        elif channel=="MuMu":
-          emuCRCardName = Year+"_card_"+channel+"_EMuShape_SingleElectron_EMu_Boosted_CR_"+mass+".txt"
-
-      DYCRCardName = Year+'_card_'+channel+'_'+region+'_DYCR_'+mass+'.txt'
+      Resolved_EMuCRCardName = Year+"_card_"+channel+"_EMuShape_EMu_Resolved_SR_"+mass+".txt"
+      Boosted_EMuCRCardName = ""
+      if channel=="EE":
+        Boosted_EMuCRCardName = Year+"_card_"+channel+"_EMuShape_SingleMuon_EMu_Boosted_CR_"+mass+".txt"
+      elif channel=="MuMu":
+        Boosted_EMuCRCardName = Year+"_card_"+channel+"_EMuShape_SingleElectron_EMu_Boosted_CR_"+mass+".txt"
+      Resolved_DYCRCardName = Year+'_card_'+channel+'_Resolved_DYCR_'+mass+'.txt'
+      Boosted_DYCRCardName = Year+'_card_'+channel+'_Boosted_DYCR_'+mass+'.txt'
 
       cmd = 'combineCards.py'
       cmd += ' SR='+Year+'_card_'+channel+'_'+region+'_SR_'+mass+'.txt'
-      cmd += ' emuCR='+emuCRCardName
-      cmd += ' DYCR='+DYCRCardName
+      cmd += ' ResolvedEMuCR='+Resolved_EMuCRCardName
+      cmd += ' ResolvedDYCR='+Resolved_DYCRCardName
+      cmd += ' BoostedEMuCR='+Boosted_EMuCRCardName
+      cmd += ' BoostedDYCR='+Boosted_DYCRCardName
 
       cmd += ' > '+outname
 
       #print cmd
       os.system(cmd)
-
-for channel in channels:
-
-  for mass in masses:
-
-    outname = Year+'_card_CRAdded_'+channel+'_'+'Combined'+'_'+mass+'.txt'
-
-    cmd = 'combineCards.py '
-
-    counter = 0
-    for region in regions:
-      counter = counter+1
-      source = Year+'_card_CRAdded_'+channel+'_'+region+'_'+mass+'.txt'
-      cmd += channel+'_'+region+'='+source+' '
-    cmd += ' > '+outname
-
-    os.system(cmd)
 
 os.chdir('../')
 

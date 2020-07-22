@@ -136,7 +136,7 @@ observation -1
           DYNormline += ' -'
       #out.write(DYNormline+'\n')
       #### DYShape
-      DYShapeline = 'Run'+Year+'_'+'DYShape shapeN2'
+      DYShapeline = 'Run'+Year+'_'+region+'DYShape shapeN2'
       for sample in samples:
         if 'DYJets_' in sample:
           DYShapeline += ' 1'

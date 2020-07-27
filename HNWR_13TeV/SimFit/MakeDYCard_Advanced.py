@@ -66,7 +66,7 @@ allsamples = [
 #'ttX',
 #'SingleTop',
 #'WJets_MG_HT',
-'DYJets_MG_HT_Reweighted',
+'DYJets_MG_HT_Reweighted_Reshaped',
 "Others",
 ]
 
@@ -128,21 +128,21 @@ observation -1
       out.write('---------------------------------\n')
 
       #### DY PDF
-      DYNormline = 'DYNorm lnN'
-      for sample in samples:
-        if 'DYJets_' in sample:
-          DYNormline += ' 1.30'
-        else:
-          DYNormline += ' -'
+      #DYNormline = 'DYNorm lnN'
+      #for sample in samples:
+      #  if 'DYJets_' in sample:
+      #    DYNormline += ' 1.30'
+      #  else:
+      #    DYNormline += ' -'
       #out.write(DYNormline+'\n')
       #### DYShape
-      DYShapeline = 'Run'+Year+'_'+region+'DYShape shapeN2'
-      for sample in samples:
-        if 'DYJets_' in sample:
-          DYShapeline += ' 1'
-        else:
-          DYShapeline += ' -'
-      out.write(DYShapeline+'\n')
+      #DYShapeline = 'Run'+Year+'_'+region+'DYShape shapeN2'
+      #for sample in samples:
+      #  if 'DYJets_' in sample:
+      #    DYShapeline += ' 1'
+      #  else:
+      #    DYShapeline += ' -'
+      #out.write(DYShapeline+'\n')
 
       ### now syst
       for syst in systs:
@@ -179,6 +179,22 @@ observation -1
           ZPtRwline += ' -'
       out.write(ZPtRwline+'\n')
 
+      DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2 '
+      for sample in samples:
+        if 'DYJets_' in sample:
+          DYReshapeSystline += ' 1'
+        else:
+          DYReshapeSystline += ' -'
+      out.write(DYReshapeSystline+'\n')
+
+      DYReshapeEEMMline = 'Run'+Year+'_DYReshapeEEMM'+' shapeN2 '
+      for sample in samples:
+        if 'DYJets_' in sample:
+          DYReshapeEEMMline += ' 1'
+        else:
+          DYReshapeEEMMline += ' -'
+      out.write(DYReshapeEEMMline+'\n')
+
       #### TODO ####
       #### TopPtReweight
       #TopPtRwline = 'TopPtRw lnN -'
@@ -204,7 +220,7 @@ observation -1
       #### Auto stat
       out.write('* autoMCStats 0 0 1\n')
       out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
-      out.write('R_DY_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' DYJets_MG_HT_Reweighted 1\n')
+      out.write('R_DY_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' DYJets_MG_HT_Reweighted_Reshaped 1\n')
 
       out.close()
 

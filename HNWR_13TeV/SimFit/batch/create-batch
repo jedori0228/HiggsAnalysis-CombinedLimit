@@ -98,6 +98,21 @@ for i in range(0,NCARD):
 
   runfile.write('echo "Input datacard '+shortcard+'"\n')
 
+  Channel = 'EE' if ('_EE_' in shortcard) else 'MuMu'
+  SRMasking = ''
+  if 'YearCombined' in shortcard:
+    if ('Resolved' in shortcard) or ('Boosted' in shortcard):
+      SRMasking = 'mask_Run2016_SR=1,mask_Run2017_SR=1,mask_Run2018_SR=1'
+    else:
+      SRMasking = 'mask_Run2016_%s_Boosted_SR=1,mask_Run2016_%s_Resolved_SR=1,mask_Run2017_%s_Boosted_SR=1,mask_Run2017_%s_Resolved_SR=1,mask_Run2018_%s_Boosted_SR=1,mask_Run2018_%s_Resolved_SR=1'%(Channel,Channel,Channel,Channel,Channel,Channel)
+
+  else:
+    if ('Resolved' in shortcard) or ('Boosted' in shortcard):
+      SRMasking = 'mask_SR=1'
+    else:
+      SRMasking = 'mask_%s_Boosted_SR=1,mask_%s_Resolved_SR=1'%(Channel,Channel)
+  SRUnMasking = SRMasking.replace('=1','=0')
+
   #### Full CLs
   if args.Full:
     #### TODO add obs later
@@ -110,6 +125,14 @@ done
 
   #### AymptoticLimits
   else:
+
+#    print>>runfile,'''text2workspace.py {0} --channel-masks -o {1}.root
+##### CR only fit with freeze signal strenght r=0
+#combine -M MultiDimFit --saveWorkspace -n CRFit {1}.root --verbose 9 --setParameters {2},r=0 --freezeParameters r
+##### Now running limit
+#combine -M AsymptoticLimits higgsCombineCRFit.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" --setParameters {3} --noFitAsimov --run blind
+#'''.format(card, shortcard.replace('.txt',''), SRMasking, SRUnMasking)
+
     runfile.write('combine -M AsymptoticLimits '+card+' --run blind \n')
     #runfile.write('combine -M AsymptoticLimits '+card+'\n')
 

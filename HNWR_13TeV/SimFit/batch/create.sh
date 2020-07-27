@@ -1,4 +1,4 @@
-JobName=DYCRmll800Applied
+JobName=FitDYDataNewKFactor
 
 for Year in 2016 2017 2018 Combined
 #for Year in 2018 Combined

@@ -56,7 +56,7 @@ allsamples = [
 #'ttX',
 #'SingleTop',
 #'WJets_MG_HT',
-'DYJets_MG_HT_Reweighted',
+'DYJets_MG_HT_Reweighted_Reshaped',
 "Others",
 ]
 

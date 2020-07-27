@@ -1,5 +1,5 @@
 #!/bin/bash
-for dir in  2020_07_19_130454__Year2016_DYCRmll800Applied 2020_07_19_130455__Year2017_DYCRmll800Applied 2020_07_19_130456__Year2018_DYCRmll800Applied 2020_07_19_130457__YearCombined_DYCRmll800Applied
+for dir in  2020_07_27_122028__Year2016_FitDYDataNewKFactor 2020_07_27_122030__Year2017_FitDYDataNewKFactor 2020_07_27_122033__Year2018_FitDYDataNewKFactor 2020_07_27_122035__YearCombined_FitDYDataNewKFactor 
 do
   ./read_Asymptotic.py -i $dir
 done

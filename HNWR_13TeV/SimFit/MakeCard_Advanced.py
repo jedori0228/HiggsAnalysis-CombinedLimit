@@ -66,7 +66,7 @@ allsamples = [
 #'ttX',
 #'SingleTop',
 #'WJets_MG_HT',
-'DYJets_MG_HT_Reweighted',
+'DYJets_MG_HT_Reweighted_Reshaped',
 "Others",
 ]
 
@@ -128,21 +128,21 @@ observation -1
       out.write('---------------------------------\n')
 
       #### DY PDF
-      DYNormline = 'DYNorm lnN -'
-      for sample in samples:
-        if 'DYJets_' in sample:
-          DYNormline += ' 1.30'
-        else:
-          DYNormline += ' -'
+      #DYNormline = 'DYNorm lnN -'
+      #for sample in samples:
+      #  if 'DYJets_' in sample:
+      #    DYNormline += ' 1.30'
+      #  else:
+      #    DYNormline += ' -'
       #out.write(DYNormline+'\n')
       #### DYShape
-      DYShapeline = 'Run'+Year+'_'+region+'DYShape shapeN2 -'
-      for sample in samples:
-        if 'DYJets_' in sample:
-          DYShapeline += ' 1'
-        else:
-          DYShapeline += ' -'
-      out.write(DYShapeline+'\n')
+      #DYShapeline = 'Run'+Year+'_'+region+'DYShape shapeN2 -'
+      #for sample in samples:
+      #  if 'DYJets_' in sample:
+      #    DYShapeline += ' 1'
+      #  else:
+      #    DYShapeline += ' -'
+      #out.write(DYShapeline+'\n')
 
       ### now syst
       for syst in systs:
@@ -178,6 +178,22 @@ observation -1
         else:
           ZPtRwline += ' -'
       out.write(ZPtRwline+'\n')
+
+      DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2 -'
+      for sample in samples:
+        if 'DYJets_' in sample:
+          DYReshapeSystline += ' 1'
+        else:
+          DYReshapeSystline += ' -'
+      out.write(DYReshapeSystline+'\n')
+
+      DYReshapeEEMMline = 'Run'+Year+'_DYReshapeEEMM'+' shapeN2 -'
+      for sample in samples:
+        if 'DYJets_' in sample:
+          DYReshapeEEMMline += ' 1'
+        else:
+          DYReshapeEEMMline += ' -'
+      out.write(DYReshapeEEMMline+'\n')
 
       #### TODO ####
       #### TopPtReweight
@@ -220,7 +236,7 @@ observation -1
       #### Auto stat
       out.write('* autoMCStats 0 0 1\n')
       out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_SR_'+channel+' TTLX_powheg 1\n')
-      out.write('R_DY_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_SR_'+channel+' DYJets_MG_HT_Reweighted 1\n')
+      out.write('R_DY_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_SR_'+channel+' DYJets_MG_HT_Reweighted_Reshaped 1\n')
 
 
       out.close()
@@ -233,11 +249,6 @@ os.chdir('Ingredients/')
 
 ## CR+SR
 print '@@@@ Combining SR and CR'
-AllRegions = [
-  "Resolved",
-  "Boosted",
-  "Combined",
-]
 for region in regions:
 
   for channel in channels:
@@ -248,26 +259,68 @@ for region in regions:
 
       outname = Year+'_card_CRAdded_'+channel+'_'+region+'_'+mass+'.txt'
 
-      Resolved_EMuCRCardName = Year+"_card_"+channel+"_EMuShape_EMu_Resolved_SR_"+mass+".txt"
-      Boosted_EMuCRCardName = ""
-      if channel=="EE":
-        Boosted_EMuCRCardName = Year+"_card_"+channel+"_EMuShape_SingleMuon_EMu_Boosted_CR_"+mass+".txt"
-      elif channel=="MuMu":
-        Boosted_EMuCRCardName = Year+"_card_"+channel+"_EMuShape_SingleElectron_EMu_Boosted_CR_"+mass+".txt"
-      Resolved_DYCRCardName = Year+'_card_'+channel+'_Resolved_DYCR_'+mass+'.txt'
-      Boosted_DYCRCardName = Year+'_card_'+channel+'_Boosted_DYCR_'+mass+'.txt'
-
       cmd = 'combineCards.py'
       cmd += ' SR='+Year+'_card_'+channel+'_'+region+'_SR_'+mass+'.txt'
-      cmd += ' ResolvedEMuCR='+Resolved_EMuCRCardName
-      cmd += ' ResolvedDYCR='+Resolved_DYCRCardName
-      cmd += ' BoostedEMuCR='+Boosted_EMuCRCardName
-      cmd += ' BoostedDYCR='+Boosted_DYCRCardName
+
+      for i_CRCh in range(0,2):
+        this_channel = channels[i_CRCh]
+
+        Resolved_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_EMu_Resolved_SR_"+mass+".txt"
+        Boosted_EMuCRCardName = ""
+        if this_channel=="EE":
+          Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleMuon_EMu_Boosted_CR_"+mass+".txt"
+        elif this_channel=="MuMu":
+          Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleElectron_EMu_Boosted_CR_"+mass+".txt"
+        Resolved_DYCRCardName = Year+'_card_'+this_channel+'_Resolved_DYCR_'+mass+'.txt'
+        Boosted_DYCRCardName = Year+'_card_'+this_channel+'_Boosted_DYCR_'+mass+'.txt'
+
+        cmd += ' '+this_channel+'ResolvedEMuCR='+Resolved_EMuCRCardName
+        cmd += ' '+this_channel+'ResolvedDYCR='+Resolved_DYCRCardName
+        cmd += ' '+this_channel+'BoostedEMuCR='+Boosted_EMuCRCardName
+        cmd += ' '+this_channel+'BoostedDYCR='+Boosted_DYCRCardName
 
       cmd += ' > '+outname
 
       #print cmd
       os.system(cmd)
+
+## Resolved+Boosted
+
+for channel in channels:
+
+  region = "Combined"
+
+  print '@@@@   '+region+'\t'+channel
+
+  for mass in masses:
+
+    outname = Year+'_card_CRAdded_'+channel+'_'+region+'_'+mass+'.txt'
+
+    cmd = 'combineCards.py'
+    cmd += ' '+channel+'_Resolved_SR='+Year+'_card_'+channel+'_Resolved_SR_'+mass+'.txt'
+    cmd += ' '+channel+'_Boosted_SR='+Year+'_card_'+channel+'_Boosted_SR_'+mass+'.txt'
+
+    for i_CRCh in range(0,2):
+      this_channel = channels[i_CRCh]
+
+      Resolved_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_EMu_Resolved_SR_"+mass+".txt"
+      Boosted_EMuCRCardName = ""
+      if this_channel=="EE":
+        Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleMuon_EMu_Boosted_CR_"+mass+".txt"
+      elif this_channel=="MuMu":
+        Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleElectron_EMu_Boosted_CR_"+mass+".txt"
+      Resolved_DYCRCardName = Year+'_card_'+this_channel+'_Resolved_DYCR_'+mass+'.txt'
+      Boosted_DYCRCardName = Year+'_card_'+this_channel+'_Boosted_DYCR_'+mass+'.txt'
+
+      cmd += ' '+this_channel+'ResolvedEMuCR='+Resolved_EMuCRCardName
+      cmd += ' '+this_channel+'ResolvedDYCR='+Resolved_DYCRCardName
+      cmd += ' '+this_channel+'BoostedEMuCR='+Boosted_EMuCRCardName
+      cmd += ' '+this_channel+'BoostedDYCR='+Boosted_DYCRCardName
+
+    cmd += ' > '+outname
+
+    print cmd
+    os.system(cmd)
 
 os.chdir('../')
 

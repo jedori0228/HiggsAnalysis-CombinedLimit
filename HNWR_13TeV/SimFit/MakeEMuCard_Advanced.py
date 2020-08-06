@@ -52,10 +52,6 @@ systs =[
 
 allsamples = [
 'TTLX_powheg',
-#'Multiboson',
-#'ttX',
-#'SingleTop',
-#'WJets_MG_HT',
 'DYJets_MG_HT_Reweighted_Reshaped',
 "Others",
 ]
@@ -164,22 +160,30 @@ observation -1
         ZPtRwline += ' -'
     out.write(ZPtRwline+'\n')
 
-    #### TODO ####
-    #### TopPtReweight
-    #TopPtRwline = 'TopPtRw lnN -'
-    #for sample in samples:
-    #  if sample=="TTLX_powheg":
-    #    TopPtRwline += ' 1'
-    #  else:
-    #    TopPtRwline += ' -'
-    #out.write(TopPtRwline+'\n')
+    DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2 -'
+    for sample in samples:
+      if 'DYJets_' in sample:
+        DYReshapeSystline += ' 1'
+      else:
+        DYReshapeSystline += ' -'
+    out.write(DYReshapeSystline+'\n')
 
     NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples)+1)+'\n'
     out.write(NormSyst_Lumi)
 
+    #### ee
+    if Year!="2016":
+      lineExtraEESyst = 'FastSimHEEPSyst lnN 1.02'+' -'*len(samples)
+      out.write(lineExtraEESyst+'\n')
+
     #### Auto stat
     out.write('* autoMCStats 0 0 1\n')
-    out.write('R_ttbar_'+ResolvedORBoosted+'_'+channel+'_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+    if region_alias=='Boosted_EMu_ElJet':
+      out.write('R_ttbar_Boosted_EE_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+    elif region_alias=='Boosted_EMu_MuJet':
+      out.write('R_ttbar_Boosted_MuMu_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+    else:
+      out.write('R_ttbar_'+ResolvedORBoosted+'_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
 
     out.close()
 

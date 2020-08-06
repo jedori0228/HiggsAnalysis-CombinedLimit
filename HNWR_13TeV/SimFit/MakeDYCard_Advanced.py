@@ -3,6 +3,10 @@ import argparse
 from IsCorrelated import IsCorrelated
 from Masses import *
 
+#########################
+#### DY CR NO SIGNAL ####
+#########################
+
 parser = argparse.ArgumentParser(description='option')
 parser.add_argument('-y', dest='Year')
 args = parser.parse_args()
@@ -52,20 +56,8 @@ systs =[
     "Prefire",
 ]
 
-sig_systs = [
-  #"Scale", ## Log normal
-  "PDFError",
-  "AlphaS",
-]
-
-#### TODO
-#### can differ for different year
 allsamples = [
 'TTLX_powheg',
-#'Multiboson',
-#'ttX',
-#'SingleTop',
-#'WJets_MG_HT',
 'DYJets_MG_HT_Reweighted_Reshaped',
 "Others",
 ]
@@ -187,7 +179,7 @@ observation -1
           DYReshapeSystline += ' -'
       out.write(DYReshapeSystline+'\n')
 
-      DYReshapeEEMMline = 'Run'+Year+'_DYReshapeEEMM'+' shapeN2 '
+      DYReshapeEEMMline = channel+'_Run'+Year+'_DYReshapeEEMM'+' shapeN2 '
       for sample in samples:
         if 'DYJets_' in sample:
           DYReshapeEEMMline += ' 1'
@@ -195,32 +187,16 @@ observation -1
           DYReshapeEEMMline += ' -'
       out.write(DYReshapeEEMMline+'\n')
 
-      #### TODO ####
-      #### TopPtReweight
-      #TopPtRwline = 'TopPtRw lnN -'
-      #for sample in samples:
-      #  if sample=="TTLX_powheg":
-      #    TopPtRwline += ' 1'
-      #  else:
-      #    TopPtRwline += ' -'
-      #out.write(TopPtRwline+'\n')
-
       NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples))+'\n'
       out.write(NormSyst_Lumi)
 
-      #### Signal only
-
-      for syst in sig_systs:
-
-        thisline = syst+' shapeN2'
-        for sample in samples:
-          thisline += ' -'
-        out.write(thisline+'\n')
-
       #### Auto stat
       out.write('* autoMCStats 0 0 1\n')
-      out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
-      out.write('R_DY_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' DYJets_MG_HT_Reweighted_Reshaped 1\n')
+      if "Boosted" in region:
+        out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
+      else:
+        out.write('R_ttbar_'+region+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
+      out.write('R_DY_'+region+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' DYJets_MG_HT_Reweighted_Reshaped 1\n')
 
       out.close()
 

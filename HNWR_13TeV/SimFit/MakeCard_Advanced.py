@@ -62,10 +62,6 @@ sig_systs = [
 #### can differ for different year
 allsamples = [
 'TTLX_powheg',
-#'Multiboson',
-#'ttX',
-#'SingleTop',
-#'WJets_MG_HT',
 'DYJets_MG_HT_Reweighted_Reshaped',
 "Others",
 ]
@@ -187,7 +183,7 @@ observation -1
           DYReshapeSystline += ' -'
       out.write(DYReshapeSystline+'\n')
 
-      DYReshapeEEMMline = 'Run'+Year+'_DYReshapeEEMM'+' shapeN2 -'
+      DYReshapeEEMMline = channel+'_Run'+Year+'_DYReshapeEEMM'+' shapeN2 -'
       for sample in samples:
         if 'DYJets_' in sample:
           DYReshapeEEMMline += ' 1'
@@ -227,16 +223,18 @@ observation -1
 
       #### ee
       if Year!="2016" and channel=="EE":
-
-        #lineExtraEESyst = 'Run'+Year+'_FastSimHEEPSyst lnN 1.02'+' -'*len(samples)
         lineExtraEESyst = 'FastSimHEEPSyst lnN 1.02'+' -'*len(samples)
         out.write(lineExtraEESyst+'\n')
 
 
       #### Auto stat
       out.write('* autoMCStats 0 0 1\n')
-      out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_SR_'+channel+' TTLX_powheg 1\n')
-      out.write('R_DY_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_SR_'+channel+' DYJets_MG_HT_Reweighted_Reshaped 1\n')
+      if "Boosted" in region:
+        out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_SR_'+channel+' TTLX_powheg 1\n')
+      else:
+        out.write('R_ttbar_'+region+'_'+Year+' rateParam '+region+'_SR_'+channel+' TTLX_powheg 1\n')
+
+      out.write('R_DY_'+region+'_'+Year+' rateParam '+region+'_SR_'+channel+' DYJets_MG_HT_Reweighted_Reshaped 1\n')
 
 
       out.close()
@@ -274,7 +272,10 @@ for region in regions:
         Resolved_DYCRCardName = Year+'_card_'+this_channel+'_Resolved_DYCR_'+mass+'.txt'
         Boosted_DYCRCardName = Year+'_card_'+this_channel+'_Boosted_DYCR_'+mass+'.txt'
 
-        cmd += ' '+this_channel+'ResolvedEMuCR='+Resolved_EMuCRCardName
+        ## emu CR is the same for ee and mm
+        if channel==this_channel:
+          cmd += ' '+this_channel+'ResolvedEMuCR='+Resolved_EMuCRCardName
+
         cmd += ' '+this_channel+'ResolvedDYCR='+Resolved_DYCRCardName
         cmd += ' '+this_channel+'BoostedEMuCR='+Boosted_EMuCRCardName
         cmd += ' '+this_channel+'BoostedDYCR='+Boosted_DYCRCardName
@@ -312,7 +313,9 @@ for channel in channels:
       Resolved_DYCRCardName = Year+'_card_'+this_channel+'_Resolved_DYCR_'+mass+'.txt'
       Boosted_DYCRCardName = Year+'_card_'+this_channel+'_Boosted_DYCR_'+mass+'.txt'
 
-      cmd += ' '+this_channel+'ResolvedEMuCR='+Resolved_EMuCRCardName
+      ## emu CR is the same for ee and mm:
+      if channel==this_channel:
+        cmd += ' '+this_channel+'ResolvedEMuCR='+Resolved_EMuCRCardName
       cmd += ' '+this_channel+'ResolvedDYCR='+Resolved_DYCRCardName
       cmd += ' '+this_channel+'BoostedEMuCR='+Boosted_EMuCRCardName
       cmd += ' '+this_channel+'BoostedDYCR='+Boosted_DYCRCardName

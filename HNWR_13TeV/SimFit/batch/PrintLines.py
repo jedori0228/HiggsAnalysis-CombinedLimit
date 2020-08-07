@@ -1,10 +1,20 @@
 import os
 
 Dirs = [
-'2020_07_27_122028__Year2016_FitDYDataNewKFactor',
-'2020_07_27_122030__Year2017_FitDYDataNewKFactor',
-'2020_07_27_122033__Year2018_FitDYDataNewKFactor',
-'2020_07_27_122035__YearCombined_FitDYDataNewKFactor',
+#'2020_08_07_012013__YearCombined_Unblind_CRSigsRemoved',
+#'2020_08_07_012019__Year2016_Unblind_CRSigsRemoved',
+#'2020_08_07_012025__Year2017_Unblind_CRSigsRemoved',
+#'2020_08_07_012033__Year2018_Unblind_CRSigsRemoved',
+#'2020_08_07_012351__YearCombined_Unblind_CRSigsRemoved_ExpObsSeparately',
+#'2020_08_07_012358__Year2016_Unblind_CRSigsRemoved_ExpObsSeparately',
+#'2020_08_07_012406__Year2017_Unblind_CRSigsRemoved_ExpObsSeparately',
+#'2020_08_07_012411__Year2018_Unblind_CRSigsRemoved_ExpObsSeparately',
+
+"NEW_2020_08_07_012013__YearCombined_Unblind_CRSigsRemoved",
+"NEW_2020_08_07_012019__Year2016_Unblind_CRSigsRemoved",
+"NEW_2020_08_07_012025__Year2017_Unblind_CRSigsRemoved",
+"NEW_2020_08_07_012033__Year2018_Unblind_CRSigsRemoved",
+
 ]
 
 print 'for dir in ',

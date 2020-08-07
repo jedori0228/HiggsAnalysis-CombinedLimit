@@ -119,23 +119,6 @@ observation -1
       out.write(line_4+'\n')
       out.write('---------------------------------\n')
 
-      #### DY PDF
-      #DYNormline = 'DYNorm lnN'
-      #for sample in samples:
-      #  if 'DYJets_' in sample:
-      #    DYNormline += ' 1.30'
-      #  else:
-      #    DYNormline += ' -'
-      #out.write(DYNormline+'\n')
-      #### DYShape
-      #DYShapeline = 'Run'+Year+'_'+region+'DYShape shapeN2'
-      #for sample in samples:
-      #  if 'DYJets_' in sample:
-      #    DYShapeline += ' 1'
-      #  else:
-      #    DYShapeline += ' -'
-      #out.write(DYShapeline+'\n')
-
       ### now syst
       for syst in systs:
 
@@ -162,7 +145,7 @@ observation -1
         out.write(thisline+'\n')
 
       #### ZPt reweight
-      #ZPtRwline = 'Run'+Year+'_ZPtRw'+' shapeN2 -'
+      #ZPtRwline = 'Run'+Year+'_ZPtRw'+' shapeN2'
       ZPtRwline = 'ZPtRw'+' shapeN2'
       for sample in samples:
         if 'DYJets_' in sample:
@@ -171,7 +154,7 @@ observation -1
           ZPtRwline += ' -'
       out.write(ZPtRwline+'\n')
 
-      DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2 '
+      DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2'
       for sample in samples:
         if 'DYJets_' in sample:
           DYReshapeSystline += ' 1'
@@ -179,7 +162,7 @@ observation -1
           DYReshapeSystline += ' -'
       out.write(DYReshapeSystline+'\n')
 
-      DYReshapeEEMMline = channel+'_Run'+Year+'_DYReshapeEEMM'+' shapeN2 '
+      DYReshapeEEMMline = channel+'_Run'+Year+'_DYReshapeEEMM'+' shapeN2'
       for sample in samples:
         if 'DYJets_' in sample:
           DYReshapeEEMMline += ' 1'

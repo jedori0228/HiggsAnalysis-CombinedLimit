@@ -123,23 +123,6 @@ observation -1
       out.write(line_4+'\n')
       out.write('---------------------------------\n')
 
-      #### DY PDF
-      #DYNormline = 'DYNorm lnN -'
-      #for sample in samples:
-      #  if 'DYJets_' in sample:
-      #    DYNormline += ' 1.30'
-      #  else:
-      #    DYNormline += ' -'
-      #out.write(DYNormline+'\n')
-      #### DYShape
-      #DYShapeline = 'Run'+Year+'_'+region+'DYShape shapeN2 -'
-      #for sample in samples:
-      #  if 'DYJets_' in sample:
-      #    DYShapeline += ' 1'
-      #  else:
-      #    DYShapeline += ' -'
-      #out.write(DYShapeline+'\n')
-
       ### now syst
       for syst in systs:
 

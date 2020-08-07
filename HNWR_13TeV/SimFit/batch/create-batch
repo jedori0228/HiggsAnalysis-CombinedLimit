@@ -116,11 +116,14 @@ for i in range(0,NCARD):
   #### Full CLs
   if args.Full:
     #### TODO add obs later
-    print>>runfile,'''for quant in 0.025 0.160 0.500 0.840 0.975
+    print>>runfile,'''echo "#### Running expected limit"
+for quant in 0.025 0.160 0.500 0.840 0.975
 do
   echo "#### quant = "$quant
   combine -M HybridNew --LHCmode LHC-limits {0} --expectedFromGrid $quant -T 100
 done
+echo "### Running observed limit"
+combine -M HybridNew --LHCmode LHC-limits {0} -T 100
 '''.format(card,shortcard)
 
   #### AymptoticLimits
@@ -133,8 +136,9 @@ done
 #combine -M AsymptoticLimits higgsCombineCRFit.MultiDimFit.mH120.root -w w --snapshotName "MultiDimFit" --setParameters {3} --noFitAsimov --run blind
 #'''.format(card, shortcard.replace('.txt',''), SRMasking, SRUnMasking)
 
-    runfile.write('combine -M AsymptoticLimits '+card+' --run blind \n')
     #runfile.write('combine -M AsymptoticLimits '+card+'\n')
+    runfile.write('combine -M AsymptoticLimits '+card+' --run expected\n')
+    runfile.write('combine -M AsymptoticLimits '+card+' --run observed\n')
 
 
   runfile.close()

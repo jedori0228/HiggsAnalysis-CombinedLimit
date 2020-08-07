@@ -3,6 +3,10 @@ import argparse
 from IsCorrelated import IsCorrelated
 from Masses import *
 
+##########################
+#### EMu CR NO SIGNAL ####
+##########################
+
 parser = argparse.ArgumentParser(description='option')
 parser.add_argument('-y', dest='Year')
 parser.add_argument('-c', dest='Channel')
@@ -98,10 +102,10 @@ shapes * * {0} $PROCESS $PROCESS_$SYSTEMATIC
 bin {2}
 observation -1
 ------------------------------'''.format(PWD+'/Ingredients/'+Year+'_'+filename, str(len(samples)),region_alias)
-    line_1 = 'bin '+region_alias
-    line_2 = 'process '+mass
-    line_3 = 'process '+'0'
-    line_4 = 'rate '+'-1'
+    line_1 = 'bin'
+    line_2 = 'process'
+    line_3 = 'process'
+    line_4 = 'rate'
 
     counter = 1
     for sample in samples:
@@ -117,15 +121,6 @@ observation -1
     out.write(line_4+'\n')
     out.write('---------------------------------\n')
 
-    #### DY PDF
-    DYNormline = 'DYNorm lnN -'
-    for sample in samples:
-      if 'DYJets_' in sample:
-        DYNormline += ' 1.30'
-      else:
-        DYNormline += ' -'
-    #out.write(DYNormline+'\n')
-
     ### now syst
     for syst in systs:
 
@@ -139,9 +134,9 @@ observation -1
       if region=="SingleMuon_EMu_Boosted_CR" and "Electron" in syst:
         continue
 
-      thisline = 'Run'+Year+'_'+syst+' shapeN2 1'
+      thisline = 'Run'+Year+'_'+syst+' shapeN2'
       if IsCorrelated(syst):
-        thisline = syst+' shapeN2 1'
+        thisline = syst+' shapeN2'
 
       for sample in samples:
         if "EMuMethod" in sample:
@@ -151,8 +146,8 @@ observation -1
       out.write(thisline+'\n')
 
     #### ZPt reweight
-    #ZPtRwline = 'Run'+Year+'_ZPtRw'+' shapeN2 -'
-    ZPtRwline = 'ZPtRw'+' shapeN2 -'
+    #ZPtRwline = 'Run'+Year+'_ZPtRw'+' shapeN2'
+    ZPtRwline = 'ZPtRw'+' shapeN2'
     for sample in samples:
       if 'DYJets_' in sample:
         ZPtRwline += ' 1'
@@ -160,7 +155,7 @@ observation -1
         ZPtRwline += ' -'
     out.write(ZPtRwline+'\n')
 
-    DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2 -'
+    DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2'
     for sample in samples:
       if 'DYJets_' in sample:
         DYReshapeSystline += ' 1'
@@ -168,13 +163,8 @@ observation -1
         DYReshapeSystline += ' -'
     out.write(DYReshapeSystline+'\n')
 
-    NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples)+1)+'\n'
+    NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples))+'\n'
     out.write(NormSyst_Lumi)
-
-    #### ee
-    if Year!="2016":
-      lineExtraEESyst = 'FastSimHEEPSyst lnN 1.02'+' -'*len(samples)
-      out.write(lineExtraEESyst+'\n')
 
     #### Auto stat
     out.write('* autoMCStats 0 0 1\n')

@@ -174,16 +174,6 @@ observation -1
           DYReshapeEEMMline += ' -'
       out.write(DYReshapeEEMMline+'\n')
 
-      #### TODO ####
-      #### TopPtReweight
-      #TopPtRwline = 'TopPtRw lnN -'
-      #for sample in samples:
-      #  if sample=="TTLX_powheg":
-      #    TopPtRwline += ' 1'
-      #  else:
-      #    TopPtRwline += ' -'
-      #out.write(TopPtRwline+'\n')
-
       NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples)+1)+'\n'
       out.write(NormSyst_Lumi)
 
@@ -246,14 +236,14 @@ for region in regions:
       for i_CRCh in range(0,2):
         this_channel = channels[i_CRCh]
 
-        Resolved_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_EMu_Resolved_SR_"+mass+".txt"
+        Resolved_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_EMu_Resolved_SR.txt"
         Boosted_EMuCRCardName = ""
         if this_channel=="EE":
-          Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleMuon_EMu_Boosted_CR_"+mass+".txt"
+          Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleMuon_EMu_Boosted_CR.txt"
         elif this_channel=="MuMu":
-          Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleElectron_EMu_Boosted_CR_"+mass+".txt"
-        Resolved_DYCRCardName = Year+'_card_'+this_channel+'_Resolved_DYCR_'+mass+'.txt'
-        Boosted_DYCRCardName = Year+'_card_'+this_channel+'_Boosted_DYCR_'+mass+'.txt'
+          Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleElectron_EMu_Boosted_CR.txt"
+        Resolved_DYCRCardName = Year+'_card_'+this_channel+'_Resolved_DYCR.txt'
+        Boosted_DYCRCardName = Year+'_card_'+this_channel+'_Boosted_DYCR.txt'
 
         ## emu CR is the same for ee and mm
         if channel==this_channel:
@@ -287,14 +277,14 @@ for channel in channels:
     for i_CRCh in range(0,2):
       this_channel = channels[i_CRCh]
 
-      Resolved_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_EMu_Resolved_SR_"+mass+".txt"
+      Resolved_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_EMu_Resolved_SR.txt"
       Boosted_EMuCRCardName = ""
       if this_channel=="EE":
-        Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleMuon_EMu_Boosted_CR_"+mass+".txt"
+        Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleMuon_EMu_Boosted_CR.txt"
       elif this_channel=="MuMu":
-        Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleElectron_EMu_Boosted_CR_"+mass+".txt"
-      Resolved_DYCRCardName = Year+'_card_'+this_channel+'_Resolved_DYCR_'+mass+'.txt'
-      Boosted_DYCRCardName = Year+'_card_'+this_channel+'_Boosted_DYCR_'+mass+'.txt'
+        Boosted_EMuCRCardName = Year+"_card_"+this_channel+"_EMuShape_SingleElectron_EMu_Boosted_CR.txt"
+      Resolved_DYCRCardName = Year+'_card_'+this_channel+'_Resolved_DYCR.txt'
+      Boosted_DYCRCardName = Year+'_card_'+this_channel+'_Boosted_DYCR.txt'
 
       ## emu CR is the same for ee and mm:
       if channel==this_channel:

@@ -1,19 +1,12 @@
 import os
 
 Dirs = [
-#'2020_08_07_012013__YearCombined_Unblind_CRSigsRemoved',
-#'2020_08_07_012019__Year2016_Unblind_CRSigsRemoved',
-#'2020_08_07_012025__Year2017_Unblind_CRSigsRemoved',
-#'2020_08_07_012033__Year2018_Unblind_CRSigsRemoved',
-#'2020_08_07_012351__YearCombined_Unblind_CRSigsRemoved_ExpObsSeparately',
-#'2020_08_07_012358__Year2016_Unblind_CRSigsRemoved_ExpObsSeparately',
-#'2020_08_07_012406__Year2017_Unblind_CRSigsRemoved_ExpObsSeparately',
-#'2020_08_07_012411__Year2018_Unblind_CRSigsRemoved_ExpObsSeparately',
 
-"NEW_2020_08_07_012013__YearCombined_Unblind_CRSigsRemoved",
-"NEW_2020_08_07_012019__Year2016_Unblind_CRSigsRemoved",
-"NEW_2020_08_07_012025__Year2017_Unblind_CRSigsRemoved",
-"NEW_2020_08_07_012033__Year2018_Unblind_CRSigsRemoved",
+'NEW_2020_08_28_203904__YearCombined_OverlapFixed_WideBin',
+'NEW_2020_08_28_203906__Year2016_OverlapFixed_WideBin',
+'NEW_2020_08_28_203907__Year2017_OverlapFixed_WideBin',
+'NEW_2020_08_28_203908__Year2018_OverlapFixed_WideBin',
+
 
 ]
 
@@ -64,3 +57,9 @@ for Dir in Dirs:
     Year = 'YearCombined'
 
   print '    cp $basedirFromCMS2/$SKFlatANV/Limit/Asymptotic/'+Year+'/'+Dir+'/2D_${ch}.pdf figures/'+Year+'/'
+
+
+
+  print '    cp $basedirFromCMS2/$SKFlatANV/Limit/Asymptotic/'+Year+'/'+Dir+'/1D_${ch}_Combined_HalfN_Limit_vs_WR.pdf figures/'+Year+'/'
+  print '    cp $basedirFromCMS2/$SKFlatANV/Limit/Asymptotic/'+Year+'/'+Dir+'/1D_${ch}_Combined_N100_Limit_vs_WR.pdf figures/'+Year+'/'
+

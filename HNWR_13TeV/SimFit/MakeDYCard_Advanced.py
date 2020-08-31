@@ -1,7 +1,6 @@
 import os,ROOT
 import argparse
 from IsCorrelated import IsCorrelated
-from Masses import *
 
 #########################
 #### DY CR NO SIGNAL ####
@@ -76,22 +75,20 @@ for region in regions:
 
     binname = region+"_DYCR_"+channel
 
-    for mass in masses:
+    filename = channel+'_'+region+'_DYCR.root'
 
-      filename = channel+'_'+region+'_DYCR.root'
-
-      f = ROOT.TFile('Ingredients/'+Year+'_'+filename)
-      samples = []
-      for sample in allsamples:
-        if f.Get(sample):
-          samples.append(sample)
+    f = ROOT.TFile('Ingredients/'+Year+'_'+filename)
+    samples = []
+    for sample in allsamples:
+      if f.Get(sample):
+        samples.append(sample)
 
 
-      out = open('Ingredients/'+Year+'_card_'+channel+'_'+region+'_DYCR_'+mass+'.txt','w')
+    out = open('Ingredients/'+Year+'_card_'+channel+'_'+region+'_DYCR.txt','w')
 
-      alltext = ''
+    alltext = ''
 
-      print>>out,'''imax *
+    print>>out,'''imax *
 jmax *
 kmax *
 ---------------
@@ -100,88 +97,88 @@ shapes * * {0} $PROCESS $PROCESS_$SYSTEMATIC
 bin {2}
 observation -1
 ------------------------------'''.format(PWD+'/Ingredients/'+Year+'_'+filename, str(len(samples)),binname)
-      line_1 = 'bin'
-      line_2 = 'process'
-      line_3 = 'process'
-      line_4 = 'rate'
+    line_1 = 'bin'
+    line_2 = 'process'
+    line_3 = 'process'
+    line_4 = 'rate'
 
-      counter = 1
+    counter = 1
+    for sample in samples:
+      line_1 += ' '+binname
+      line_2 += ' '+sample
+      line_3 += ' '+str(counter)
+      line_4 += ' -1'
+      counter += 1
+
+    out.write(line_1+'\n')
+    out.write(line_2+'\n')
+    out.write(line_3+'\n')
+    out.write(line_4+'\n')
+    out.write('---------------------------------\n')
+
+    ### now syst
+    for syst in systs:
+
+      #### Exception control
+      if channel=="EE" and "Muon" in syst:
+        continue
+      if channel=="MuMu" and "Electron" in syst:
+        continue
+      if Year=="2018" and syst=="Prefire":
+        continue
+      if region=="Resolved" and syst=="LSFSF":
+        continue
+
+
+      thisline = 'Run'+Year+'_'+syst+' shapeN2'
+      if IsCorrelated(syst):
+        thisline = syst+' shapeN2'
+
       for sample in samples:
-        line_1 += ' '+binname
-        line_2 += ' '+sample
-        line_3 += ' '+str(counter)
-        line_4 += ' -1'
-        counter += 1
-
-      out.write(line_1+'\n')
-      out.write(line_2+'\n')
-      out.write(line_3+'\n')
-      out.write(line_4+'\n')
-      out.write('---------------------------------\n')
-
-      ### now syst
-      for syst in systs:
-
-        #### Exception control
-        if channel=="EE" and "Muon" in syst:
-          continue
-        if channel=="MuMu" and "Electron" in syst:
-          continue
-        if Year=="2018" and syst=="Prefire":
-          continue
-        if region=="Resolved" and syst=="LSFSF":
-          continue
-
-
-        thisline = 'Run'+Year+'_'+syst+' shapeN2'
-        if IsCorrelated(syst):
-          thisline = syst+' shapeN2'
-
-        for sample in samples:
-          if "EMuMethod" in sample:
-            thisline += ' -'
-          else:
-            thisline += ' 1'
-        out.write(thisline+'\n')
-
-      #### ZPt reweight
-      #ZPtRwline = 'Run'+Year+'_ZPtRw'+' shapeN2'
-      ZPtRwline = 'ZPtRw'+' shapeN2'
-      for sample in samples:
-        if 'DYJets_' in sample:
-          ZPtRwline += ' 1'
+        if "EMuMethod" in sample:
+          thisline += ' -'
         else:
-          ZPtRwline += ' -'
-      out.write(ZPtRwline+'\n')
+          thisline += ' 1'
+      out.write(thisline+'\n')
 
-      DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2'
-      for sample in samples:
-        if 'DYJets_' in sample:
-          DYReshapeSystline += ' 1'
-        else:
-          DYReshapeSystline += ' -'
-      out.write(DYReshapeSystline+'\n')
-
-      DYReshapeEEMMline = channel+'_Run'+Year+'_DYReshapeEEMM'+' shapeN2'
-      for sample in samples:
-        if 'DYJets_' in sample:
-          DYReshapeEEMMline += ' 1'
-        else:
-          DYReshapeEEMMline += ' -'
-      out.write(DYReshapeEEMMline+'\n')
-
-      NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples))+'\n'
-      out.write(NormSyst_Lumi)
-
-      #### Auto stat
-      out.write('* autoMCStats 0 0 1\n')
-      if "Boosted" in region:
-        out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
+    #### ZPt reweight
+    #ZPtRwline = 'Run'+Year+'_ZPtRw'+' shapeN2'
+    ZPtRwline = 'ZPtRw'+' shapeN2'
+    for sample in samples:
+      if 'DYJets_' in sample:
+        ZPtRwline += ' 1'
       else:
-        out.write('R_ttbar_'+region+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
-      out.write('R_DY_'+region+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' DYJets_MG_HT_Reweighted_Reshaped 1\n')
+        ZPtRwline += ' -'
+    out.write(ZPtRwline+'\n')
 
-      out.close()
+    DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2'
+    for sample in samples:
+      if 'DYJets_' in sample:
+        DYReshapeSystline += ' 1'
+      else:
+        DYReshapeSystline += ' -'
+    out.write(DYReshapeSystline+'\n')
+
+    DYReshapeEEMMline = channel+'_Run'+Year+'_DYReshapeEEMM'+' shapeN2'
+    for sample in samples:
+      if 'DYJets_' in sample:
+        DYReshapeEEMMline += ' 1'
+      else:
+        DYReshapeEEMMline += ' -'
+    out.write(DYReshapeEEMMline+'\n')
+
+    NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples))+'\n'
+    out.write(NormSyst_Lumi)
+
+    #### Auto stat
+    out.write('* autoMCStats 0 0 1\n')
+    if "Boosted" in region:
+      out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
+    else:
+      out.write('R_ttbar_'+region+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
+    out.write('R_DY_'+region+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' DYJets_MG_HT_Reweighted_Reshaped 1\n')
+
+    out.close()
 
 ## combine
 

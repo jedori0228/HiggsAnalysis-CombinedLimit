@@ -32,7 +32,7 @@ for i in range(0,n_job):
       CardUsed = line.split()[2]
       break
 
-  CardUsed = CardUsed.split('/')[-1].replace('.txt','')
+  CardUsed = CardUsed.split('/')[-1].replace('.root','')
 
   Expected_Central = "999999"
   Expected_1sdUp = "999999"
@@ -57,14 +57,11 @@ for i in range(0,n_job):
     if "Observed Limit" in line:
       Obs = line.split()[4]
 
-  # CardUsed = 2016_card_CRAdded_EE_Boosted_WR1000_N100
+  # CardUSed = 2017_card_CRAdded_EE_Combined_WR5800_N3200
   words = CardUsed.split('_')
   if len(words)<4:
     continue
   cardinfo = words[3]+'\t'+words[4]+'\t'+words[5].replace('WR','')+'\t'+words[6].replace('N','')
-
-  #if Expected_Central=="":
-  #  print cardinfo
 
   outfile.write(cardinfo+'\t'+Expected_Central+'\t'+Expected_1sdUp+'\t'+Expected_1sdDn+'\t'+Expected_2sdUp+'\t'+Expected_2sdDn+'\t'+Obs+'\n')
 

@@ -38,10 +38,12 @@ for i in range(0,n_job):
       break
   if CardUsed=="":
     continue
-  CardUsed = CardUsed.split('/')[-1].replace('.txt','')
-  #print "@@@@ "+CardUsed
+  CardUsed = CardUsed.split('/')[-1].replace('.root','')
+  print "@@@@ "+CardUsed
 
-  limits = []
+  ######        0        1        2       3          4        5
+  ######     exp       +1        -1       +2       -2      obs
+  limits = [9999999, 9999999, 9999999, 9999999, 9999999, 9999999]
   for quant in quants:
 
     #print quant
@@ -62,7 +64,25 @@ for i in range(0,n_job):
             this_limit = words[3]
             break
 
-    limits.append(this_limit)
+    if quant=="0.025":
+      limits[4] = this_limit
+    elif quant=="0.160":
+      limits[2] = this_limit
+    elif quant=="0.500":
+      limits[0] = this_limit
+    elif quant=="0.840":
+      limits[1] = this_limit
+    elif quant=="0.975":
+      limits[3] = this_limit
+
+  for j in range(0,len(lines_log)):
+    line = lines_log[j]
+    if "### Running observed limit" in line:
+      for k in range(j+1,len(lines_log)):
+        if "-- Hybrid New --" in lines_log[k]:
+          words = lines_log[k+1].split()
+          limits[5] = words[3]
+          break
 
   # CardUsed = card_EE_Combined_WR5000_N4200
   #            YearCombined_card_EE_Boosted_WR1000_N100.txt
@@ -75,8 +95,7 @@ for i in range(0,n_job):
   #  print cardinfo
 
   #0.025 0.160 0.500 0.840 0.975
-  outfile.write(cardinfo+'\t'+limits[2]+'\t'+limits[3]+'\t'+limits[1]+'\t'+limits[4]+'\t'+limits[0]+'\n')
-
+  outfile.write(cardinfo+'\t'+limits[0]+'\t'+limits[1]+'\t'+limits[2]+'\t'+limits[3]+'\t'+limits[4]+'\t'+limits[5]+'\n')
 
 '''
  -- AsymptoticLimits ( CLs ) --

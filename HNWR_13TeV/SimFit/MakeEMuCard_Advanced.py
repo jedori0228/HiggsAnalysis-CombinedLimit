@@ -1,7 +1,6 @@
 import os,ROOT
 import argparse
 from IsCorrelated import IsCorrelated
-from Masses import *
 
 ##########################
 #### EMu CR NO SIGNAL ####
@@ -60,40 +59,32 @@ allsamples = [
 "Others",
 ]
 
-for mass in masses:
+for iregion in regions:
 
-  for iregion in regions:
+  region = iregion[0]
+  region_alias = iregion[1]
+  ResolvedORBoosted = ""
 
-    region = iregion[0]
-    region_alias = iregion[1]
-    ResolvedORBoosted = ""
+  if "Resolved" in region:
+    ResolvedORBoosted = "Resolved"
+  elif "Boosted" in region:
+    ResolvedORBoosted = "Boosted"
+  else:
+    print "WTF??"
 
-    if "Resolved" in region:
-      ResolvedORBoosted = "Resolved"
-    elif "Boosted" in region:
-      ResolvedORBoosted = "Boosted"
-    else:
-      print "WTF??"
+  filename = channel+"_"+region+'.root'
 
-    filename = channel+"_"+region+'.root'
+  f = ROOT.TFile('Ingredients/'+Year+'_'+filename)
+  samples = []
+  for sample in allsamples:
+    if f.Get(sample):
+      samples.append(sample)
 
-    f = ROOT.TFile('Ingredients/'+Year+'_'+filename)
-    samples = []
-    for sample in allsamples:
-      if f.Get(sample):
-        samples.append(sample)
-    #### check signal
-    h_Sig = f.Get(mass)
-    if not h_Sig:
-      print 'No signal for '+mass+' in '+channel+'\t'+region
-      print '--> file : '+'Ingredients/'+Year+'_'+filename
-      print '--> hname = '+mass
+  out = open('Ingredients/'+Year+'_card_'+channel+'_EMuShape_'+region+'.txt','w')
 
-    out = open('Ingredients/'+Year+'_card_'+channel+'_EMuShape_'+region+'_'+mass+'.txt','w')
+  alltext = ''
 
-    alltext = ''
-
-    print>>out,'''imax *
+  print>>out,'''imax *
 jmax *
 kmax *
 ---------------
@@ -102,81 +93,81 @@ shapes * * {0} $PROCESS $PROCESS_$SYSTEMATIC
 bin {2}
 observation -1
 ------------------------------'''.format(PWD+'/Ingredients/'+Year+'_'+filename, str(len(samples)),region_alias)
-    line_1 = 'bin'
-    line_2 = 'process'
-    line_3 = 'process'
-    line_4 = 'rate'
+  line_1 = 'bin'
+  line_2 = 'process'
+  line_3 = 'process'
+  line_4 = 'rate'
 
-    counter = 1
+  counter = 1
+  for sample in samples:
+    line_1 += ' '+region_alias
+    line_2 += ' '+sample
+    line_3 += ' '+str(counter)
+    line_4 += ' -1'
+    counter += 1
+
+  out.write(line_1+'\n')
+  out.write(line_2+'\n')
+  out.write(line_3+'\n')
+  out.write(line_4+'\n')
+  out.write('---------------------------------\n')
+
+  ### now syst
+  for syst in systs:
+
+    #### Exception control
+    if Year=="2018" and syst=="Prefire":
+      continue
+    if "Resolved" in region and syst=="LSFSF":
+      continue
+    if region=="SingleElectron_EMu_Boosted_CR" and "Muon" in syst:
+      continue
+    if region=="SingleMuon_EMu_Boosted_CR" and "Electron" in syst:
+      continue
+
+    thisline = 'Run'+Year+'_'+syst+' shapeN2'
+    if IsCorrelated(syst):
+      thisline = syst+' shapeN2'
+
     for sample in samples:
-      line_1 += ' '+region_alias
-      line_2 += ' '+sample
-      line_3 += ' '+str(counter)
-      line_4 += ' -1'
-      counter += 1
-
-    out.write(line_1+'\n')
-    out.write(line_2+'\n')
-    out.write(line_3+'\n')
-    out.write(line_4+'\n')
-    out.write('---------------------------------\n')
-
-    ### now syst
-    for syst in systs:
-
-      #### Exception control
-      if Year=="2018" and syst=="Prefire":
-        continue
-      if "Resolved" in region and syst=="LSFSF":
-        continue
-      if region=="SingleElectron_EMu_Boosted_CR" and "Muon" in syst:
-        continue
-      if region=="SingleMuon_EMu_Boosted_CR" and "Electron" in syst:
-        continue
-
-      thisline = 'Run'+Year+'_'+syst+' shapeN2'
-      if IsCorrelated(syst):
-        thisline = syst+' shapeN2'
-
-      for sample in samples:
-        if "EMuMethod" in sample:
-          thisline += ' -'
-        else:
-          thisline += ' 1'
-      out.write(thisline+'\n')
-
-    #### ZPt reweight
-    #ZPtRwline = 'Run'+Year+'_ZPtRw'+' shapeN2'
-    ZPtRwline = 'ZPtRw'+' shapeN2'
-    for sample in samples:
-      if 'DYJets_' in sample:
-        ZPtRwline += ' 1'
+      if "EMuMethod" in sample:
+        thisline += ' -'
       else:
-        ZPtRwline += ' -'
-    out.write(ZPtRwline+'\n')
+        thisline += ' 1'
+    out.write(thisline+'\n')
 
-    DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2'
-    for sample in samples:
-      if 'DYJets_' in sample:
-        DYReshapeSystline += ' 1'
-      else:
-        DYReshapeSystline += ' -'
-    out.write(DYReshapeSystline+'\n')
-
-    NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples))+'\n'
-    out.write(NormSyst_Lumi)
-
-    #### Auto stat
-    out.write('* autoMCStats 0 0 1\n')
-    if region_alias=='Boosted_EMu_ElJet':
-      out.write('R_ttbar_Boosted_EE_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
-    elif region_alias=='Boosted_EMu_MuJet':
-      out.write('R_ttbar_Boosted_MuMu_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+  #### ZPt reweight
+  #ZPtRwline = 'Run'+Year+'_ZPtRw'+' shapeN2'
+  ZPtRwline = 'ZPtRw'+' shapeN2'
+  for sample in samples:
+    if 'DYJets_' in sample:
+      ZPtRwline += ' 1'
     else:
-      out.write('R_ttbar_'+ResolvedORBoosted+'_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+      ZPtRwline += ' -'
+  out.write(ZPtRwline+'\n')
 
-    out.close()
+  DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2'
+  for sample in samples:
+    if 'DYJets_' in sample:
+      DYReshapeSystline += ' 1'
+    else:
+      DYReshapeSystline += ' -'
+  out.write(DYReshapeSystline+'\n')
 
-  ## combine
+  NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples))+'\n'
+  out.write(NormSyst_Lumi)
 
-  #'combineCards.py Name1=card1.txt Name2=card2.txt .... > card.txt'
+  #### Auto stat
+  out.write('* autoMCStats 0 0 1\n')
+  if region_alias=='Boosted_EMu_ElJet':
+    out.write('R_ttbar_Boosted_EE_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+  elif region_alias=='Boosted_EMu_MuJet':
+    out.write('R_ttbar_Boosted_MuMu_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+  else:
+    out.write('R_ttbar_'+ResolvedORBoosted+'_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+
+  out.close()
+
+## combine
+
+#'combineCards.py Name1=card1.txt Name2=card2.txt .... > card.txt'

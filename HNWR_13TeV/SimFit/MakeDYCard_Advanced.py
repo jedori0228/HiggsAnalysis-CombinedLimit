@@ -159,13 +159,13 @@ observation -1
         DYReshapeSystline += ' -'
     out.write(DYReshapeSystline+'\n')
 
-    DYReshapeEEMMline = channel+'_Run'+Year+'_DYReshapeEEMM'+' shapeN2'
+    DYReshapeEEMMline = channel+'_DYReshapeEEMM'+' shapeN2'
     for sample in samples:
       if 'DYJets_' in sample:
         DYReshapeEEMMline += ' 1'
       else:
         DYReshapeEEMMline += ' -'
-    out.write(DYReshapeEEMMline+'\n')
+    #out.write(DYReshapeEEMMline+'\n')
 
     NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples))+'\n'
     out.write(NormSyst_Lumi)

@@ -158,21 +158,16 @@ observation -1
           ZPtRwline += ' -'
       out.write(ZPtRwline+'\n')
 
-      DYReshapeSystline = 'Run'+Year+'_DYReshapeSyst'+' shapeN2 -'
-      for sample in samples:
-        if 'DYJets_' in sample:
-          DYReshapeSystline += ' 1'
-        else:
-          DYReshapeSystline += ' -'
-      out.write(DYReshapeSystline+'\n')
-
-      DYReshapeEEMMline = channel+'_DYReshapeEEMM'+' shapeN2 -'
-      for sample in samples:
-        if 'DYJets_' in sample:
-          DYReshapeEEMMline += ' 1'
-        else:
-          DYReshapeEEMMline += ' -'
-      #out.write(DYReshapeEEMMline+'\n')
+      NBin = 9 if ('Resolved' in region) else 5
+      ResolvedORBoosted = 'Resolved' if ('Resolved' in region) else 'Boosted'
+      for iBin in range(0,NBin):
+        DYReshapeSystline = 'Run'+Year+'_'+ResolvedORBoosted+'DYReshapeSystBin'+str(iBin)+' shapeN2 -'
+        for sample in samples:
+          if 'DYJets_' in sample:
+            DYReshapeSystline += ' 1'
+          else:
+            DYReshapeSystline += ' -'
+        out.write(DYReshapeSystline+'\n')
 
       NormSyst_Lumi = 'Run'+Year+'_Lumi'+' lnN'+(' '+LumiSyst)*(len(samples)+1)+'\n'
       out.write(NormSyst_Lumi)

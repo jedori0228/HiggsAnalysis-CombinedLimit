@@ -29,6 +29,8 @@ print "@@@@ Lumi err = "+LumiSyst
 
 PWD = os.getcwd()
 
+OthersNormSyst = '1.50'
+
 regions = [
   ["EMu_Resolved_SR","Resolved_EMu"],
   ["SingleElectron_EMu_Boosted_CR","Boosted_EMu_MuJet"],
@@ -145,6 +147,21 @@ observation -1
     else:
       ZPtRwline += ' -'
   out.write(ZPtRwline+'\n')
+
+  OthersNormSystName = ''
+  if region_alias=='Boosted_EMu_ElJet':
+    OthersNormSystName = 'OthersNormSyst_Boosted_EE_Run'+Year
+  elif region_alias=='Boosted_EMu_MuJet':
+    OthersNormSystName = 'OthersNormSyst_Boosted_MuMu_Run'+Year
+  else:
+    OthersNormSystName = 'OthersNormSyst_Resolved_Run'+Year
+  OthersNormSystLine = OthersNormSystName+' lnN'
+  for sample in samples:
+    if 'Others' in sample:
+      OthersNormSystLine += ' '+OthersNormSyst
+    else:
+      OthersNormSystLine += ' -'
+  out.write(OthersNormSystLine+'\n')
 
   NBin = 9 if ('Resolved' in region) else 5
   ResolvedORBoosted = 'Resolved' if ('Resolved' in region) else 'Boosted'

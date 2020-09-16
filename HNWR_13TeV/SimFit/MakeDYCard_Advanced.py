@@ -27,6 +27,8 @@ print "@@@@ Lumi err = "+LumiSyst
 
 PWD = os.getcwd()
 
+OthersNormSyst = '1.50'
+
 regions = [
   "Resolved",
   "Boosted",
@@ -150,6 +152,15 @@ observation -1
       else:
         ZPtRwline += ' -'
     out.write(ZPtRwline+'\n')
+
+    OthersNormSystName = 'OthersNormSyst_Resolved_Run'+Year if ('Resolved' in region) else 'OthersNormSyst_Boosted_'+channel+'_Run'+Year
+    OthersNormSystLine = OthersNormSystName+' lnN'
+    for sample in samples:
+      if 'Others' in sample:
+        OthersNormSystLine += ' '+OthersNormSyst
+      else:
+        OthersNormSystLine += ' -'
+    out.write(OthersNormSystLine+'\n')
 
     NBin = 9 if ('Resolved' in region) else 5
     ResolvedORBoosted = 'Resolved' if ('Resolved' in region) else 'Boosted'

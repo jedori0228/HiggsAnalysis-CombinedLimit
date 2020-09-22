@@ -160,7 +160,7 @@ observation -1
           ZPtRwline += ' -'
       out.write(ZPtRwline+'\n')
 
-      OthersNormSystName = 'OthersNormSyst_Resolved_Run'+Year if ('Resolved' in region) else 'OthersNormSyst_Boosted_'+channel+'_Run'+Year
+      OthersNormSystName = 'OthersNormSyst_Resolved_'+channel+'_Run'+Year if ('Resolved' in region) else 'OthersNormSyst_Boosted_'+channel+'_Run'+Year
       OthersNormSystLine = OthersNormSystName+' lnN -'
       for sample in samples:
         if 'Others' in sample:

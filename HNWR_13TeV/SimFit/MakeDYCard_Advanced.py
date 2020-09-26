@@ -27,6 +27,7 @@ print "@@@@ Lumi err = "+LumiSyst
 
 PWD = os.getcwd()
 
+NonPromptNormSyst = '2.00'
 OthersNormSyst = '1.50'
 
 regions = [
@@ -58,8 +59,9 @@ systs =[
 ]
 
 allsamples = [
-'TTLX_powheg',
+'TT_TW',
 'DYJets_MG_HT_Reweighted_Reshaped',
+"NonPrompt",
 "Others",
 ]
 
@@ -153,14 +155,22 @@ observation -1
         ZPtRwline += ' -'
     out.write(ZPtRwline+'\n')
 
-    OthersNormSystName = 'OthersNormSyst_Resolved_'+channel+'_Run'+Year if ('Resolved' in region) else 'OthersNormSyst_Boosted_'+channel+'_Run'+Year
-    OthersNormSystLine = OthersNormSystName+' lnN'
+    NonPromptNormSystName = 'NonPromptNormSyst_Resolved_'+channel+'_Run'+Year if ('Resolved' in region) else 'NonPromptNormSyst_Boosted_'+channel+'_Run'+Year
+    NonPromptNormSystLine = NonPromptNormSystName+' lnN'
+    for sample in samples:
+      if 'NonPrompt' in sample:
+        NonPromptNormSystLine += ' '+NonPromptNormSyst
+      else:
+        NonPromptNormSystLine += ' -'
+    out.write(NonPromptNormSystLine+'\n')
+
+    OthersNormline = 'OthersNorm'+' lnN'
     for sample in samples:
       if 'Others' in sample:
-        OthersNormSystLine += ' '+OthersNormSyst
+        OthersNormline += ' '+OthersNormSyst
       else:
-        OthersNormSystLine += ' -'
-    out.write(OthersNormSystLine+'\n')
+        OthersNormline += ' -'
+    out.write(OthersNormline+'\n')
 
     NBin = 9 if ('Resolved' in region) else 5
     ResolvedORBoosted = 'Resolved' if ('Resolved' in region) else 'Boosted'
@@ -179,9 +189,9 @@ observation -1
     #### Auto stat
     out.write('* autoMCStats 0 0 1\n')
     if "Boosted" in region:
-      out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
+      out.write('R_ttbar_'+region+'_'+channel+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TT_TW 1\n')
     else:
-      out.write('R_ttbar_'+region+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TTLX_powheg 1\n')
+      out.write('R_ttbar_'+region+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' TT_TW 1\n')
     out.write('R_DY_'+region+'_'+Year+' rateParam '+region+'_DYCR_'+channel+' DYJets_MG_HT_Reweighted_Reshaped 1\n')
 
     out.close()

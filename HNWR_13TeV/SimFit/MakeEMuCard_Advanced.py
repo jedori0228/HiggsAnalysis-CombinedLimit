@@ -29,6 +29,7 @@ print "@@@@ Lumi err = "+LumiSyst
 
 PWD = os.getcwd()
 
+NonPromptNormSyst = '2.00'
 OthersNormSyst = '1.50'
 
 regions = [
@@ -56,8 +57,9 @@ systs =[
 ]
 
 allsamples = [
-'TTLX_powheg',
+'TT_TW',
 'DYJets_MG_HT_Reweighted_Reshaped',
+"NonPrompt",
 "Others",
 ]
 
@@ -148,20 +150,28 @@ observation -1
       ZPtRwline += ' -'
   out.write(ZPtRwline+'\n')
 
-  OthersNormSystName = ''
+  NonPromptNormSystName = ''
   if region_alias=='Boosted_EMu_ElJet':
-    OthersNormSystName = 'OthersNormSyst_Boosted_EE_Run'+Year
+    NonPromptNormSystName = 'NonPromptNormSyst_Boosted_EE_Run'+Year
   elif region_alias=='Boosted_EMu_MuJet':
-    OthersNormSystName = 'OthersNormSyst_Boosted_MuMu_Run'+Year
+    NonPromptNormSystName = 'NonPromptNormSyst_Boosted_MuMu_Run'+Year
   else:
-    OthersNormSystName = 'OthersNormSyst_Resolved_Run'+Year
-  OthersNormSystLine = OthersNormSystName+' lnN'
+    NonPromptNormSystName = 'NonPromptNormSyst_Resolved_Run'+Year
+  NonPromptNormSystLine = NonPromptNormSystName+' lnN'
+  for sample in samples:
+    if 'NonPrompt' in sample:
+      NonPromptNormSystLine += ' '+NonPromptNormSyst
+    else:
+      NonPromptNormSystLine += ' -'
+  out.write(NonPromptNormSystLine+'\n')
+
+  OthersNormline = 'OthersNorm'+' lnN'
   for sample in samples:
     if 'Others' in sample:
-      OthersNormSystLine += ' '+OthersNormSyst
+      OthersNormline += ' '+OthersNormSyst
     else:
-      OthersNormSystLine += ' -'
-  out.write(OthersNormSystLine+'\n')
+      OthersNormline += ' -'
+  out.write(OthersNormline+'\n')
 
   NBin = 9 if ('Resolved' in region) else 5
   ResolvedORBoosted = 'Resolved' if ('Resolved' in region) else 'Boosted'
@@ -180,11 +190,11 @@ observation -1
   #### Auto stat
   out.write('* autoMCStats 0 0 1\n')
   if region_alias=='Boosted_EMu_ElJet':
-    out.write('R_ttbar_Boosted_EE_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+    out.write('R_ttbar_Boosted_EE_'+Year+' rateParam '+region_alias+' TT_TW 1\n')
   elif region_alias=='Boosted_EMu_MuJet':
-    out.write('R_ttbar_Boosted_MuMu_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+    out.write('R_ttbar_Boosted_MuMu_'+Year+' rateParam '+region_alias+' TT_TW 1\n')
   else:
-    out.write('R_ttbar_'+ResolvedORBoosted+'_'+Year+' rateParam '+region_alias+' TTLX_powheg 1\n')
+    out.write('R_ttbar_'+ResolvedORBoosted+'_'+Year+' rateParam '+region_alias+' TT_TW 1\n')
 
   out.close()
 

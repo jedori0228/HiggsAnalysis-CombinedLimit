@@ -175,7 +175,7 @@ observation -1
     NBin = 9 if ('Resolved' in region) else 5
     ResolvedORBoosted = 'Resolved' if ('Resolved' in region) else 'Boosted'
     for iBin in range(0,NBin):
-      DYReshapeSystline = 'Run'+Year+'_'+ResolvedORBoosted+'DYReshapeSystBin'+str(iBin)+' shapeN2'
+      DYReshapeSystline = ResolvedORBoosted+'DYReshapeSystBin'+str(iBin)+' shapeN2'
       for sample in samples:
         if 'DYJets_' in sample:
           DYReshapeSystline += ' 1'

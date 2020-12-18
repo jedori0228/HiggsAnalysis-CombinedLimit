@@ -7,6 +7,8 @@ parser = argparse.ArgumentParser(description='option')
 parser.add_argument('-y', dest='Year')
 args = parser.parse_args()
 
+IsOfficial = True
+
 Year = args.Year
 
 LumiSyst = "1.025"
@@ -203,17 +205,32 @@ observation -1
         out.write(thisline+'\n')
 
       #### Scale as log normal
-      signalScaleLine = 'SignalScale lnN '
-      h_SignalScale = f.Get(mass+'_ScaleIntegralSyst')
-      if h_SignalScale:
-        syst_SignalScale = 1.+h_SignalScale.GetBinContent(1)
-        signalScaleLine = 'SignalScale lnN '+str(syst_SignalScale)+' -'*len(samples)
-        out.write(signalScaleLine+'\n')
+      #### 1) FullSim : from txt
+      if IsOfficial:
+        signalScaleLine = 'SignalScale lnN '
+        scale_lines = open('data/'+Year+'_'+region+'_'+channel+'.txt').readlines()
+        for scale_line in scale_lines:
+          words = scale_line.split()
+          if words[0]==mass:
+            syst_SignalScale = 1.+float(words[1])
+            signalScaleLine = 'SignalScale lnN '+str(syst_SignalScale)+' -'*len(samples)
+            out.write(signalScaleLine+'\n')
+            break
+
+      else:
+        #### 2) FastSim : from histogram
+        signalScaleLine = 'SignalScale lnN '
+        h_SignalScale = f.Get(mass+'_ScaleIntegralSyst')
+        if h_SignalScale:
+          syst_SignalScale = 1.+h_SignalScale.GetBinContent(1)
+          signalScaleLine = 'SignalScale lnN '+str(syst_SignalScale)+' -'*len(samples)
+          out.write(signalScaleLine+'\n')
 
       #### ee
-      if Year!="2016" and channel=="EE":
-        lineExtraEESyst = 'FastSimHEEPSyst lnN 1.02'+' -'*len(samples)
-        out.write(lineExtraEESyst+'\n')
+      if not IsOfficial:
+        if Year!="2016" and channel=="EE":
+          lineExtraEESyst = 'FastSimHEEPSyst lnN 1.02'+' -'*len(samples)
+          out.write(lineExtraEESyst+'\n')
 
 
       #### Auto stat

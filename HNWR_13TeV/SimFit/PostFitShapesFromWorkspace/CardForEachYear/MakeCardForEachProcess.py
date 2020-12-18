@@ -7,9 +7,8 @@ fnames = open('tmp.txt').readlines()
 os.system('rm tmp.txt')
 
 samples = [
-'TTLX_powheg',
-#'TT_TW',
-#'NonPrompt',
+'TT_TW',
+'NonPrompt',
 'DYJets_MG_HT_Reweighted_Reshaped',
 'Others',
 ]

@@ -2,8 +2,7 @@
 
 cd CardForEachYear
 
-for dirName in DYJets_MG_HT_Reweighted_Reshaped Others TTLX_powheg
-#for dirName in DYJets_MG_HT_Reweighted_Reshaped Others TT_TW NonPrompt
+for dirName in DYJets_MG_HT_Reweighted_Reshaped Others TT_TW NonPrompt
 do
 
   cd ${dirName}
@@ -25,8 +24,7 @@ done
 
 cd ..
 
-for sample in DYJets_MG_HT_Reweighted_Reshaped Others TTLX_powheg
-#for sample in DYJets_MG_HT_Reweighted_Reshaped Others TT_TW NonPrompt
+for sample in DYJets_MG_HT_Reweighted_Reshaped Others TT_TW NonPrompt
 do
   mv CardForEachYear/${sample}/YearCombined_card_EE_Boosted_SR_WR5000_N3000.root ${sample}__YearCombined_card_EE_Boosted_SR_WR5000_N3000.root
   mv CardForEachYear/${sample}/YearCombined_card_EE_Boosted_SR_WR5000_N3000.txt ${sample}__YearCombined_card_EE_Boosted_SR_WR5000_N3000.txt

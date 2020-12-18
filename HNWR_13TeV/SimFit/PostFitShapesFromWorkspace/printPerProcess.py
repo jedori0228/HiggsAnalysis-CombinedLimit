@@ -5,9 +5,8 @@ import os
 Samples = [
 'DYJets_MG_HT_Reweighted_Reshaped__',
 'Others__',
-'TTLX_powheg__',
-#'TT_TW__',
-#'NonPrompt__',
+'TT_TW__',
+'NonPrompt__',
 ]
 
 cards = [
